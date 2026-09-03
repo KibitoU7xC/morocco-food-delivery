@@ -36,6 +36,7 @@ export interface VerifyOtpResponse {
   message: string;
   token?: string;
   customer?: CustomerData;
+  data?: CustomerData;
   is_new_user?: boolean;
 }
 
@@ -51,4 +52,5 @@ export interface RegisterResponse {
   message: string;
   token?: string;
   customer?: CustomerData;
+  data?: CustomerData;
 }

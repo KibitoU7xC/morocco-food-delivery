@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { sendOtp, verifyOtp, register } from '../auth.api';
 import { COUNTRIES, Country } from '../countries';
+import { useLanguage } from '@/lib/context/language-context';
 
 type Language = 'EN' | 'FR';
 type AuthMode = 'login' | 'register';
@@ -87,9 +88,15 @@ const CONTENT = {
   },
 };
 
-export default function LoginForm({ initialMode = 'login' }: { initialMode?: AuthMode } = {}) {
+export default function LoginForm({
+  initialMode = 'login',
+  onClose,
+}: {
+  initialMode?: AuthMode;
+  onClose?: () => void;
+} = {}) {
   const router = useRouter();
-  const [lang, setLang] = useState<Language>('EN');
+  const { lang } = useLanguage();
   const t = CONTENT[lang];
 
   // Auth Modes & Form State
@@ -276,9 +283,10 @@ export default function LoginForm({ initialMode = 'login' }: { initialMode?: Aut
           setSuccessMsg(t.successLogin);
         }
 
-        // Only after successful verification -> move to dashboard / home!
+        // Only after successful verification -> move back to home page!
         setTimeout(() => {
-          router.push('/');
+          router.push('/dashboard');
+          router.refresh();
         }, 800);
       } else {
         setErrorMsg(verifyRes.message || 'Invalid verification code.');
@@ -362,9 +370,8 @@ export default function LoginForm({ initialMode = 'login' }: { initialMode?: Aut
         <span className="font-semibold text-[#1b1b21]">{selectedCountry.dial_code}</span>
         {!disabled && (
           <svg
-            className={`w-3.5 h-3.5 text-[#6b6675] transition-transform duration-200 ${
-              countryDropdownOpen ? 'rotate-180' : ''
-            }`}
+            className={`w-3.5 h-3.5 text-[#6b6675] transition-transform duration-200 ${countryDropdownOpen ? 'rotate-180' : ''
+              }`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -402,11 +409,10 @@ export default function LoginForm({ initialMode = 'login' }: { initialMode?: Aut
                     setSelectedCountry(c);
                     setCountryDropdownOpen(false);
                   }}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition cursor-pointer ${
-                    selectedCountry.code === c.code
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition cursor-pointer ${selectedCountry.code === c.code
                       ? 'bg-[#e7deff] text-[#5906e7] font-bold'
                       : 'hover:bg-[#f5f2fb] text-[#1b1b21]'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-2.5">
                     <Image
@@ -442,46 +448,6 @@ export default function LoginForm({ initialMode = 'login' }: { initialMode?: Aut
           border: '1px solid rgba(234, 231, 239, 0.9)',
         }}
       >
-        {/* Top Row: Brand Logo & Language Switcher */}
-        <div className="flex items-center justify-between gap-4 mb-7">
-          {/* Official Brand Logo */}
-          <Link href="/" className="inline-flex items-center group">
-            <div className="w-18 h-18 sm:w-20 sm:h-20 flex items-center justify-center relative">
-              <Image
-                src="/logo_4096x4096.png"
-                alt="Orders au Maroc Logo"
-                width={80}
-                height={80}
-                priority
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </Link>
-
-          {/* Language Toggle Pill */}
-          <div className="flex items-center bg-[#f5f2fb] p-1 rounded-full border border-[#eae7ef]/60">
-            <button
-              onClick={() => setLang('EN')}
-              type="button"
-              className={`px-3.5 py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${lang === 'EN'
-                  ? 'bg-white text-[#5906e7] shadow-sm'
-                  : 'text-[#6b6675] hover:text-[#1b1b21]'
-                }`}
-            >
-              EN
-            </button>
-            <button
-              onClick={() => setLang('FR')}
-              type="button"
-              className={`px-3.5 py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${lang === 'FR'
-                  ? 'bg-white text-[#5906e7] shadow-sm'
-                  : 'text-[#6b6675] hover:text-[#1b1b21]'
-                }`}
-            >
-              FR
-            </button>
-          </div>
-        </div>
 
         {/* Headline & Subtitle */}
         <div className="mb-7">
@@ -595,8 +561,8 @@ export default function LoginForm({ initialMode = 'login' }: { initialMode?: Aut
                       onKeyDown={(e) => handleOtpKeyDown(idx, e)}
                       onPaste={handleOtpPaste}
                       className={`w-11 sm:w-13 h-13 sm:h-14 text-center font-bold text-xl rounded-2xl bg-white text-[#5906e7] outline-none shadow-xs transition-all duration-150 ${isCurrent
-                          ? 'border-2 border-[#5906e7] ring-2 ring-[#5906e7]/20'
-                          : 'border border-[#e8e4f3]'
+                        ? 'border-2 border-[#5906e7] ring-2 ring-[#5906e7]/20'
+                        : 'border border-[#e8e4f3]'
                         }`}
                     />
                   );

@@ -9,9 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@splinetool/react-spline": "^4.1.0",
+    "@splinetool/runtime": "^2.0.36",
+    "@types/three": "^0.185.4",
     "next": "16.3.4",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

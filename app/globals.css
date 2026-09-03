@@ -30,3 +30,24 @@ body {
   font-family: var(--font-plus-jakarta), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Silent Google Translate styling */
+.goog-te-banner-frame,
+.skiptranslate,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+  position: static !important;
+}
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
