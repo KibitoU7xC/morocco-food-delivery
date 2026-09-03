@@ -83,7 +83,7 @@ export default function ServicePills() {
           <a
             key={item.id}
             href={item.href}
-            className={`group bg-white rounded-2xl p-4 border border-[#e4e1ea]/80 shadow-md hover:shadow-lg ${item.borderHover} transition-all duration-200 flex items-center gap-3 cursor-pointer`}
+            className={`group bg-white rounded-2xl p-3 sm:p-4 border border-[#e4e1ea]/80 shadow-md hover:shadow-lg ${item.borderHover} transition-all duration-200 flex items-center gap-2.5 sm:gap-3 cursor-pointer`}
           >
             <div
               className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors ${item.bgIcon}`}

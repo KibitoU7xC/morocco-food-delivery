@@ -55,19 +55,19 @@ export default function HeroSection() {
             </div>
 
             <div className="space-y-3">
-              <h1 className="text-4xl sm:text-5xl lg:text-[56px] lg:leading-[1.12] font-extrabold tracking-tight text-[#1b1b21]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] lg:leading-[1.12] font-extrabold tracking-tight text-[#1b1b21]">
                 Anything you crave, <br className="hidden sm:inline" />
                 <span className="text-[#1b1b21]">delivered in minutes.</span>
               </h1>
-              <p className="text-base sm:text-lg text-[#1b1b21]/85 font-medium max-w-lg leading-relaxed">
+              <p className="text-sm sm:text-base lg:text-lg text-[#1b1b21]/85 font-medium max-w-lg leading-relaxed">
                 Order delicious meals from your favorite restaurants, fresh market groceries, or request quick couriers across Morocco.
               </p>
             </div>
 
             {/* Sleek Tactile Search Bar Pill */}
-            <div className="w-full max-w-xl bg-white p-1.5 sm:p-2 rounded-full shadow-[0_10px_35px_rgba(0,0,0,0.08)] flex items-center gap-2 border border-[#e4e1ea]/60">
-              <div className="flex-1 flex items-center gap-2.5 pl-3 sm:pl-4">
-                <svg className="w-5 h-5 text-[#f5b301] shrink-0" fill="currentColor" viewBox="0 0 24 24">
+            <div className="w-full max-w-xl bg-white p-1.5 sm:p-2 rounded-full shadow-[0_10px_35px_rgba(0,0,0,0.08)] flex items-center gap-1.5 sm:gap-2 border border-[#e4e1ea]/60">
+              <div className="flex-1 min-w-0 flex items-center gap-2 sm:gap-2.5 pl-2.5 sm:pl-4">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#f5b301] shrink-0" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                 </svg>
                 <input
@@ -76,14 +76,14 @@ export default function HeroSection() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Enter street or neighborhood (e.g. Gauthier, Agdal...)"
-                  className="w-full bg-transparent text-sm sm:text-base font-semibold text-[#1b1b21] placeholder-[#9e9aa8] outline-none"
+                  className="w-full min-w-0 bg-transparent text-xs sm:text-base font-semibold text-[#1b1b21] placeholder-[#9e9aa8] outline-none"
                 />
               </div>
 
               <button
                 type="button"
                 onClick={handleNearMe}
-                className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-[#5906e7] hover:text-[#4502b8] px-2 py-1 transition-colors cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-[#5906e7] hover:text-[#4502b8] px-2 py-1 transition-colors cursor-pointer shrink-0"
               >
                 <svg className="w-3.5 h-3.5 text-[#5906e7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07-7.07l-1.41 1.41M6.34 17.66l-1.41 1.41m14.14 0l-1.41-1.41M6.34 6.34L4.93 4.93M12 16a4 4 0 100-8 4 4 0 000 8z" />
@@ -94,17 +94,17 @@ export default function HeroSection() {
               <button
                 type="button"
                 onClick={handleFindFood}
-                className="px-5 sm:px-7 py-3 rounded-full bg-[#5906e7] hover:bg-[#4502b8] text-white text-sm font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 shrink-0 active:scale-95 cursor-pointer"
+                className="px-4 sm:px-7 py-2.5 sm:py-3 rounded-full bg-[#5906e7] hover:bg-[#4502b8] text-white text-xs sm:text-sm font-bold transition-all shadow-sm flex items-center justify-center gap-1 sm:gap-1.5 shrink-0 active:scale-95 cursor-pointer"
               >
                 <span>Find food</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </button>
             </div>
 
             {/* Micro perks line */}
-            <div className="flex flex-wrap items-center gap-5 text-xs text-[#1b1b21] font-semibold pt-1">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-5 text-xs text-[#1b1b21] font-semibold pt-1">
               <span className="flex items-center gap-1.5">
                 <svg className="w-4 h-4 text-[#006d43]" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -123,9 +123,9 @@ export default function HeroSection() {
           {/* Right Column: Free-Floating 3D Realistic Burger */}
           <div className="lg:col-span-6 relative z-20 flex items-center justify-center">
             {/* Subtle soft ambient glow behind the burger */}
-            <div className="pointer-events-none absolute w-80 sm:w-[420px] h-80 sm:h-[420px] bg-gradient-to-tr from-amber-400/20 via-orange-400/15 to-[#5906e7]/10 rounded-full blur-3xl -z-10 translate-x-3 sm:translate-x-5 lg:translate-x-6" />
+            <div className="pointer-events-none absolute w-72 sm:w-[420px] h-72 sm:h-[420px] bg-gradient-to-tr from-amber-400/20 via-orange-400/15 to-[#5906e7]/10 rounded-full blur-3xl -z-10 translate-x-0 sm:translate-x-3 lg:translate-x-6" />
 
-            <div className="relative w-full h-[460px] sm:h-[520px] lg:h-[580px] max-w-[620px] flex items-center justify-center translate-x-3 sm:translate-x-5 lg:translate-x-6">
+            <div className="relative w-full h-[340px] sm:h-[480px] lg:h-[580px] max-w-[620px] flex items-center justify-center translate-x-0 sm:translate-x-3 lg:translate-x-6">
               {/* 3D Realistic Burger WebGL Canvas */}
               <Burger3D />
             </div>

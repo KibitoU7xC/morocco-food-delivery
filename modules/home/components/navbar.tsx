@@ -87,7 +87,7 @@ export default function HomeNavbar() {
                   />
                   <circle cx="12" cy="9.5" r="2.5" />
                 </svg>
-                <span className="truncate max-w-[110px] sm:max-w-none">{selectedCity}</span>
+                <span className="truncate max-w-[85px] xs:max-w-[120px] sm:max-w-none">{selectedCity}</span>
                 <svg
                   className="w-3 h-3 text-[#6b6675]"
                   fill="none"
@@ -128,7 +128,7 @@ export default function HomeNavbar() {
 
             {/* 2. Log In / Sign Up Button */}
             {userLoggedIn ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <span className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f5f2fb] text-[#5906e7] text-xs font-bold border border-[#e4e1ea]">
                   👋 {customerName}
                 </span>
@@ -140,7 +140,7 @@ export default function HomeNavbar() {
                     setUserLoggedIn(false);
                     setCustomerName(null);
                   }}
-                  className="px-4 py-2 rounded-full bg-[#1b1b21] hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer active:scale-95"
+                  className="px-3 sm:px-4 py-2 rounded-full bg-[#1b1b21] hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer active:scale-95"
                 >
                   Logout
                 </button>
@@ -149,10 +149,10 @@ export default function HomeNavbar() {
               <button
                 type="button"
                 onClick={() => setIsAuthModalOpen(true)}
-                className="flex items-center gap-2 px-3.5 sm:px-5 py-2 rounded-full bg-[#1b1b21] hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-xs active:scale-95 cursor-pointer shrink-0"
+                className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 rounded-full bg-[#1b1b21] hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-xs active:scale-95 cursor-pointer shrink-0"
               >
                 <svg
-                  className="w-4 h-4 text-white shrink-0"
+                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -164,16 +164,17 @@ export default function HomeNavbar() {
                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                   />
                 </svg>
-                <span>Log In / Sign Up</span>
+                <span className="hidden sm:inline">Log In / Sign Up</span>
+                <span className="sm:hidden">Log In</span>
               </button>
             )}
 
             {/* 3. EN / FR Language Switcher Pill (STRICTLY AFTER the login button) */}
-            <div className="flex items-center bg-[#f5f2fb] p-1 rounded-full border border-[#eae7ef]/80 shadow-2xs">
+            <div className="flex items-center bg-[#f5f2fb] p-0.5 sm:p-1 rounded-full border border-[#eae7ef]/80 shadow-2xs shrink-0">
               <button
                 type="button"
                 onClick={() => setLang('EN')}
-                className={`px-3 sm:px-3.5 py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
+                className={`px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
                   lang === 'EN'
                     ? 'bg-white text-[#5906e7] shadow-xs'
                     : 'text-[#6b6675] hover:text-[#1b1b21]'
@@ -184,7 +185,7 @@ export default function HomeNavbar() {
               <button
                 type="button"
                 onClick={() => setLang('FR')}
-                className={`px-3 sm:px-3.5 py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
+                className={`px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
                   lang === 'FR'
                     ? 'bg-white text-[#5906e7] shadow-xs'
                     : 'text-[#6b6675] hover:text-[#1b1b21]'

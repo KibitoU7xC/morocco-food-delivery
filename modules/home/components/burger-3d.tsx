@@ -175,7 +175,7 @@ export default function Burger3D({ onLoaded }: Burger3DProps) {
   }, [onLoaded]);
 
   return (
-    <div className="relative w-full h-full min-h-[460px] sm:min-h-[540px] lg:min-h-[600px] flex items-center justify-center">
+    <div className="relative w-full h-full min-h-[320px] sm:min-h-[460px] lg:min-h-[560px] flex items-center justify-center">
       {/* 3D WebGL Canvas Container */}
       <div
         ref={containerRef}
