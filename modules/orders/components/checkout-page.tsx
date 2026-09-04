@@ -52,7 +52,8 @@ export function CheckoutPage({ paymentMethods }: CheckoutPageProps) {
   const cartState = useCart(signedIn);
   const addressesState = useAddresses(signedIn);
   const { wallet } = useWallet(signedIn);
-  const promo = usePromoCode();
+  const restaurantId = cartState.cart?.restaurant_id ?? undefined;
+  const promo = usePromoCode(restaurantId);
   const placeOrderState = usePlaceOrder();
 
   const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
@@ -194,6 +195,8 @@ export function CheckoutPage({ paymentMethods }: CheckoutPageProps) {
               result={promo.result}
               isApplying={promo.isApplying}
               error={promo.error}
+              availableCodes={promo.availableCodes}
+              isLoadingCodes={promo.isLoadingCodes}
               onApply={promo.apply}
               onRemove={promo.remove}
             />

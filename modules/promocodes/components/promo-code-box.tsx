@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import { Icon } from "@/components/ui/icon";
-import { formatMAD } from "@/lib/utils";
-import type { ApplyPromoResponse } from "../promocodes.types";
+import { cn, formatMAD } from "@/lib/utils";
+import type { ApplyPromoResponse, PromoCode } from "../promocodes.types";
 
 interface PromoCodeBoxProps {
   appliedCode: string | null;
   result: ApplyPromoResponse | null;
   isApplying: boolean;
   error: string | null;
+  availableCodes?: PromoCode[];
+  isLoadingCodes?: boolean;
   onApply: (code: string) => void;
   onRemove: () => void;
 }
@@ -19,6 +21,8 @@ export function PromoCodeBox({
   result,
   isApplying,
   error,
+  availableCodes = [],
+  isLoadingCodes = false,
   onApply,
   onRemove,
 }: PromoCodeBoxProps) {
@@ -85,6 +89,96 @@ export function PromoCodeBox({
           <span>{error}</span>
         </div>
       ) : null}
+
+      {/* Applicable Coupons Section (API-Driven) */}
+      <div className="mt-space-md border-t border-surface-container pt-space-sm">
+        <div className="mb-space-xs flex items-center justify-between">
+          <span className="flex items-center gap-1.5 font-label-sm text-label-sm font-bold uppercase tracking-wider text-on-surface-variant">
+            <Icon name="local_offer" size={14} className="text-secondary" />
+            Applicable Coupons
+          </span>
+          {availableCodes.length > 0 ? (
+            <span className="rounded-full bg-secondary-container/40 px-2 py-0.5 font-label-sm text-[11px] font-bold text-secondary">
+              {availableCodes.length} Available
+            </span>
+          ) : null}
+        </div>
+
+        {isLoadingCodes ? (
+          <div className="space-y-2 pt-1">
+            <div className="h-14 animate-pulse rounded-xl bg-surface-container-low" />
+          </div>
+        ) : availableCodes.length > 0 ? (
+          <div className="flex flex-col gap-2 pt-1">
+            {availableCodes.map((coupon) => {
+              const isCurrent =
+                appliedCode?.toUpperCase() === coupon.code.toUpperCase();
+              return (
+                <div
+                  key={coupon.id}
+                  className={cn(
+                    "flex items-center justify-between gap-2 rounded-xl border p-2.5 transition-all",
+                    isCurrent
+                      ? "border-tertiary bg-tertiary-fixed/15 shadow-sm"
+                      : "border-dashed border-outline-variant/60 bg-surface-container-low/40 hover:border-secondary hover:bg-surface-container-low"
+                  )}
+                >
+                  <div className="flex flex-col min-w-0 pr-1">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="rounded-md bg-surface-container-high px-2 py-0.5 font-label-sm text-xs font-black uppercase tracking-wider text-on-surface border border-outline-variant/40">
+                        {coupon.code}
+                      </span>
+                      <span className="font-label-sm text-xs font-extrabold text-tertiary">
+                        {coupon.discount_type === "percentage"
+                          ? `${coupon.discount_value}% OFF`
+                          : `${Number(coupon.discount_value).toFixed(0)} MAD OFF`}
+                      </span>
+                    </div>
+                    <span className="mt-1 font-body-sm text-[11px] text-on-surface-variant truncate">
+                      {coupon.description ||
+                        (coupon.min_order_amount > 0
+                          ? `On orders above ${formatMAD(coupon.min_order_amount)}`
+                          : "Valid on this order")}
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (isCurrent) {
+                        onRemove();
+                      } else {
+                        onApply(coupon.code);
+                      }
+                    }}
+                    disabled={isApplying}
+                    className={cn(
+                      "flex-shrink-0 rounded-lg px-3 py-1 font-label-sm text-xs font-bold transition-all cursor-pointer shadow-sm",
+                      isCurrent
+                        ? "bg-tertiary text-on-tertiary hover:opacity-90"
+                        : "bg-secondary text-on-secondary hover:brightness-95 disabled:opacity-50"
+                    )}
+                  >
+                    {isCurrent ? (
+                      <span className="flex items-center gap-1">
+                        <Icon name="check" size={14} />
+                        Applied
+                      </span>
+                    ) : (
+                      "Apply"
+                    )}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="pt-1 font-body-sm text-xs text-on-surface-variant">
+            No applicable coupons available right now.
+          </p>
+        )}
+      </div>
     </div>
   );
 }
+

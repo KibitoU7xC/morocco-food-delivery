@@ -8,24 +8,47 @@
  * reflects the discount.
  */
 
-import { useCallback, useState } from "react";
-import { applyPromoCode } from "./promocodes.api";
-import type { ApplyPromoResponse } from "./promocodes.types";
+import { useCallback, useEffect, useState } from "react";
+import { applyPromoCode, getPromoCodes } from "./promocodes.api";
+import type { ApplyPromoResponse, PromoCode } from "./promocodes.types";
 
 interface UsePromoCodeResult {
   appliedCode: string | null;
   result: ApplyPromoResponse | null;
   isApplying: boolean;
   error: string | null;
+  availableCodes: PromoCode[];
+  isLoadingCodes: boolean;
   apply: (code: string) => Promise<boolean>;
   remove: () => void;
+  refreshCodes: () => void;
 }
 
-export function usePromoCode(): UsePromoCodeResult {
+export function usePromoCode(restaurantId?: number): UsePromoCodeResult {
   const [appliedCode, setAppliedCode] = useState<string | null>(null);
   const [result, setResult] = useState<ApplyPromoResponse | null>(null);
   const [isApplying, setIsApplying] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [availableCodes, setAvailableCodes] = useState<PromoCode[]>([]);
+  const [isLoadingCodes, setIsLoadingCodes] = useState(true);
+
+  const loadCodes = useCallback(async () => {
+    setIsLoadingCodes(true);
+    try {
+      const list = await getPromoCodes(restaurantId);
+      // Only keep active promocodes
+      const active = (list || []).filter((c) => c.status === "active");
+      setAvailableCodes(active);
+    } catch {
+      setAvailableCodes([]);
+    } finally {
+      setIsLoadingCodes(false);
+    }
+  }, [restaurantId]);
+
+  useEffect(() => {
+    void loadCodes();
+  }, [loadCodes]);
 
   const apply = useCallback(async (code: string) => {
     const trimmed = code.trim();
@@ -58,5 +81,15 @@ export function usePromoCode(): UsePromoCodeResult {
     setError(null);
   }, []);
 
-  return { appliedCode, result, isApplying, error, apply, remove };
+  return {
+    appliedCode,
+    result,
+    isApplying,
+    error,
+    availableCodes,
+    isLoadingCodes,
+    apply,
+    remove,
+    refreshCodes: loadCodes,
+  };
 }
