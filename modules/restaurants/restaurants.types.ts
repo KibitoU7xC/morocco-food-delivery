@@ -29,7 +29,12 @@ export interface Restaurant {
   email?: string;
   phone?: string;
   logo: string | null;
+  logo_url?: string | null;
   cover_image: string | null;
+  cover_image_url?: string | null;
+  banner?: string | null;
+  banner_image?: string | null;
+  banner_url?: string | null;
   description: string | null;
   address?: string;
   city?: string;
@@ -209,7 +214,10 @@ export interface RestaurantItem {
   id: number;
   name: string;
   slug: string;
-  image: string;
+  image: string; // primary display banner
+  banner: string; // dedicated restaurant banner
+  coverImage: string; // alias for banner
+  logo: string; // dedicated restaurant logo
   promoBadge: string;
   rating: number;
   ratingCount?: number;

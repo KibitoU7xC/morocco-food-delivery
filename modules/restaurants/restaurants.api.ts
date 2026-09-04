@@ -63,6 +63,47 @@ export function resolveBackendImageUrl(path?: string | null): string {
 }
 
 /**
+ * Helper to resolve restaurant banner and logo according to Food Delivery App - APis.pdf:
+ * - The restaurant banner comes strictly from `cover_image` (or cover_image_url, banner, banner_image).
+ * - The restaurant logo comes strictly from `logo` (or logo_url).
+ * - If cover_image is not uploaded or null, we use an authentic high-quality restaurant banner, NEVER the logo!
+ */
+export function extractRestaurantMedia(r: Restaurant): {
+  banner: string;
+  logo: string;
+} {
+  const lowerName = (r.name || '').toLowerCase().trim();
+
+  // 1. Resolve banner strictly from cover_image / banner fields in API
+  const rawCover =
+    r.cover_image ||
+    r.cover_image_url ||
+    r.banner ||
+    r.banner_image ||
+    r.banner_url ||
+    null;
+  const resolvedCover = resolveBackendImageUrl(rawCover);
+
+  // 2. Resolve logo strictly from logo fields in API
+  const rawLogo = r.logo || r.logo_url || null;
+  const resolvedLogo = resolveBackendImageUrl(rawLogo);
+
+  // 3. Dedicated authentic fallback banner if backend cover_image is not yet uploaded
+  const fallbackBanner = lowerName.includes('kfc')
+    ? '/images/banners/kfc_banner.jpg'
+    : lowerName.includes('burger')
+    ? '/images/banners/burger_banner.jpg'
+    : '/images/banners/kfc_banner.jpg';
+
+  const banner = resolvedCover || fallbackBanner;
+
+  return {
+    banner,
+    logo: resolvedLogo,
+  };
+}
+
+/**
  * Fetch Food Products / Dishes directly from backend API:
  * GET /api/v1/products?category_id=...&search=...&sort_by=...&sort_order=...
  */
@@ -254,17 +295,17 @@ export async function getRestaurants(
           const minOrder = Number(r.minimum_order_amount) || 30;
           const lowerName = r.name.toLowerCase().trim();
 
-          // Real backend storage image from live API
-          const image =
-            resolveBackendImageUrl(r.cover_image) ||
-            resolveBackendImageUrl(r.logo) ||
-            '';
+          // Separate banner from logo strictly according to Food Delivery App - APis.pdf
+          const { banner, logo } = extractRestaurantMedia(r);
 
           return {
             id: r.id,
             name: r.name,
             slug: r.slug || r.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-            image,
+            image: banner,
+            banner,
+            coverImage: banner,
+            logo,
             promoBadge: r.is_verified ? '20% OFF ON FIRST ORDER' : 'ITEMS AT 49 MAD',
             rating: r.rating || 4.5,
             ratingCount: 180,
@@ -845,11 +886,8 @@ export async function getRestaurantDetails(
       const lowerName = r.name.toLowerCase().trim();
       const prep = r.average_preparation_time || 25;
       const minOrder = Number(r.minimum_order_amount) || 0;
-
-      const image =
-        resolveBackendImageUrl(r.cover_image) ||
-        resolveBackendImageUrl(r.logo) ||
-        '';
+      // Separate banner from logo strictly according to Food Delivery App - APis.pdf
+      const { banner, logo } = extractRestaurantMedia(r);
 
       const catName =
         typeof r.category === 'object' && r.category !== null && 'name' in r.category
@@ -865,7 +903,10 @@ export async function getRestaurantDetails(
         id: r.id,
         name: r.name,
         slug: r.slug || r.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-        image,
+        image: banner,
+        banner,
+        coverImage: banner,
+        logo,
         promoBadge: promoCodes.length > 0 ? promoCodes[0].title || promoCodes[0].code : (r.is_verified ? 'VERIFIED PARTNER' : ''),
         rating,
         ratingCount,

@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { RestaurantItem, FoodProductItem, RestaurantPromoCode } from '../restaurants.types';
 import { updateFoodCartQuantity, syncCartState } from '../restaurants.api';
 import FloatingCartBar from './floating-cart-bar';
@@ -235,36 +236,43 @@ export default function RestaurantDetailView({
       {/* Main Container */}
       <div className="max-w-[860px] w-full mx-auto px-4 sm:px-6 pt-6">
         {/* 1. Breadcrumbs */}
-        <nav aria-label="Breadcrumb" className="mb-4">
-          <ol className="flex items-center gap-2 text-xs font-medium text-gray-500">
-            <li>
-              <Link href="/" className="hover:text-gray-900 transition-colors">
-                Home
-              </Link>
-            </li>
-            <li className="text-gray-300">/</li>
-            <li>
-              <Link href="/restaurants" className="hover:text-gray-900 transition-colors">
-                Casablanca
-              </Link>
-            </li>
-            <li className="text-gray-300">/</li>
-            <li className="font-semibold text-gray-900 truncate max-w-[200px] sm:max-w-none">
-              {restaurant.name}
-            </li>
-          </ol>
-        </nav>
+        <Breadcrumbs
+          className="mb-4"
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Restaurants", href: "/restaurants" },
+            { label: restaurant.name },
+          ]}
+        />
 
-        {/* 2. Restaurant Main Title */}
-        <div className="mb-4">
-          <h1 className="text-[26px] sm:text-[32px] md:text-[36px] font-black text-[#1c1c24] tracking-tight">
-            {restaurant.name}
-          </h1>
+        {/* 2. Restaurant Main Title & Brand Logo */}
+        <div className="mb-5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5 sm:gap-4">
+            {restaurant.logo ? (
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border border-gray-200/80 bg-white shrink-0 shadow-sm">
+                <Image
+                  src={restaurant.logo}
+                  alt={`${restaurant.name} logo`}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+            ) : null}
+            <div>
+              <h1 className="text-[26px] sm:text-[32px] md:text-[36px] font-black text-[#1c1c24] tracking-tight leading-tight">
+                {restaurant.name}
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-500 font-semibold mt-0.5">
+                {restaurant.cuisines} • {restaurant.district || restaurant.city}
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* 3. Hero Restaurant Image Banner (The clicked restaurant's image from backend API) */}
+        {/* 3. Hero Restaurant Image Banner (The clicked restaurant's banner image from backend API) */}
         <RestaurantHeroBanner
-          image={restaurant.image}
+          image={restaurant.banner || restaurant.coverImage || restaurant.image}
           name={restaurant.name}
           cuisines={restaurant.cuisines}
           promoBadge={restaurant.promoBadge}

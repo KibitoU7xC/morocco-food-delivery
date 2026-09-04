@@ -10,6 +10,7 @@ import RestaurantGrid from '@/modules/restaurants/components/restaurant-grid';
 import FoodGrid from '@/modules/restaurants/components/food-grid';
 import FloatingCartBar from '@/modules/restaurants/components/floating-cart-bar';
 import RestaurantFooter from '@/modules/restaurants/components/restaurant-footer';
+import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import {
   getRestaurants,
   getFoodProducts,
@@ -168,7 +169,16 @@ export default function RestaurantsPage() {
       />
 
       {/* 4. Main Content */}
-      <main className="flex-grow max-w-[1240px] w-full mx-auto px-4 pt-8 pb-28">
+      <main className="flex-grow max-w-[1240px] w-full mx-auto px-4 pt-6 pb-28">
+        {/* Breadcrumbs */}
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Restaurants" },
+          ]}
+          className="mb-6"
+        />
+
         {/* "What's on your mind?" Category Carousel */}
         <CuisineCarousel
           categories={categories}
