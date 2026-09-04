@@ -39,4 +39,4 @@ export interface CreateAddressRequest {
   is_default?: boolean;
 }
 
-export type UpdateAddressRequest = CreateAddressRequest;
+export type UpdateAddressRequest = Partial<CreateAddressRequest>;

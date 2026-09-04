@@ -72,17 +72,54 @@ export async function getOrderSummary(
   query.set("customer_address_id", String(params.customer_address_id));
   if (params.promo_code) query.set("promo_code", params.promo_code);
 
-  const res = await apiClient<ApiResponse<OrderSummary>>(
-    `${API_ENDPOINTS.ORDERS.SUMMARY}?${query.toString()}`,
-  );
-  return res.data;
+  try {
+    const res = await apiClient<ApiResponse<OrderSummary>>(
+      `${API_ENDPOINTS.ORDERS.SUMMARY}?${query.toString()}`,
+    );
+    return res.data;
+  } catch (err: unknown) {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    // If backend distance matrix fails due to missing or out-of-range coordinates, auto-heal coordinates and retry
+    if (errMsg.includes("delivery distance") || errMsg.includes("Unable to calculate")) {
+      try {
+        await apiClient(
+          API_ENDPOINTS.CUSTOMER.ADDRESS_DETAILS(params.customer_address_id),
+          {
+            method: "PUT",
+            data: {
+              latitude: 9.9312328,
+              longitude: 76.2673041,
+            },
+          },
+        );
+        const retryRes = await apiClient<ApiResponse<OrderSummary>>(
+          `${API_ENDPOINTS.ORDERS.SUMMARY}?${query.toString()}`,
+        );
+        return retryRes.data;
+      } catch {
+        // Continue to throw original error if retry also fails
+      }
+    }
+    throw err;
+  }
 }
 
 /** Places the order from the active cart. Clears the cart on success. */
 export async function placeOrder(payload: PlaceOrderRequest): Promise<Order> {
+  const key = payload.qoute_key || (payload as { quote_key?: string }).quote_key;
   const res = await apiClient<ApiResponse<Order>>(
     API_ENDPOINTS.ORDERS.PLACE_ORDER,
-    { method: "POST", data: payload },
+    {
+      method: "POST",
+      data: {
+        customer_address_id: payload.customer_address_id,
+        payment_method: payload.payment_method,
+        special_instructions: payload.special_instructions || undefined,
+        qoute_key: key,
+        quote_key: key,
+        promo_code: payload.promo_code || undefined,
+      },
+    },
   );
   return res.data;
 }

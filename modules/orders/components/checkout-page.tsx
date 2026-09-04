@@ -110,15 +110,24 @@ export function CheckoutPage({ paymentMethods }: CheckoutPageProps) {
 
   const handlePlaceOrder = async () => {
     if (!selectedAddressId || !paymentCode || !summaryState.summary) return;
+    const quoteKey =
+      summaryState.summary.price_rule_data?.distance_matrix_data?.quote_key ||
+      (summaryState.summary as unknown as { quote_key?: string }).quote_key ||
+      (summaryState.summary as unknown as { qoute_key?: string }).qoute_key;
+
     const order = await placeOrderState.submit({
       customer_address_id: selectedAddressId,
       payment_method: paymentCode,
       special_instructions: specialInstructions,
-      qoute_key: summaryState.summary.price_rule_data?.distance_matrix_data?.quote_key,
+      qoute_key: quoteKey,
       promo_code: promo.appliedCode ?? undefined,
     });
     if (order) {
-      cartState.refresh();
+      await cartState.refresh();
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cart_count", "0");
+        window.dispatchEvent(new CustomEvent("cart_updated", { detail: { count: 0 } }));
+      }
     }
   };
 
@@ -193,6 +202,7 @@ export function CheckoutPage({ paymentMethods }: CheckoutPageProps) {
               summary={summaryState.summary}
               isLoading={summaryState.isLoading}
               error={summaryState.error}
+              onRetry={summaryState.refresh}
               hint={
                 !selectedAddressId
                   ? "Select a delivery address to see your bill."

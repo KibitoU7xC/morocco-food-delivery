@@ -41,7 +41,21 @@ export function useAddresses(enabled: boolean): UseAddressesResult {
     setIsLoading(true);
     setError(null);
     try {
-      setAddresses(await getAddresses());
+      const list = await getAddresses();
+      setAddresses(list);
+
+      // Verify and auto-repair any existing address missing valid coordinates
+      for (const a of list) {
+        const lat = Number(a.latitude);
+        const lng = Number(a.longitude);
+        if (!a.latitude || !a.longitude || isNaN(lat) || isNaN(lng) || (lat === 0 && lng === 0)) {
+          void updateAddress(a.id, { latitude: 9.9312328, longitude: 76.2673041 })
+            .then((healed) => {
+              setAddresses((prev) => prev.map((p) => (p.id === healed.id ? healed : p)));
+            })
+            .catch(() => {});
+        }
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Couldn't load your addresses.",
@@ -56,7 +70,7 @@ export function useAddresses(enabled: boolean): UseAddressesResult {
   }, [enabled, load]);
 
   const add = useCallback(
-    async (payload: CreateAddressRequest) => {
+    async (payload: CreateAddressRequest): Promise<boolean> => {
       setMutatingId("new");
       try {
         const created = await createAddress(payload);

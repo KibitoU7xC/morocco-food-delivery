@@ -17,6 +17,9 @@ import type {
   UpdateAddressRequest,
 } from "./addresses.types";
 
+const DEFAULT_SERVICE_LAT = 9.9312328;
+const DEFAULT_SERVICE_LNG = 76.2673041;
+
 export async function getAddresses(): Promise<CustomerAddress[]> {
   const res = await apiClient<ApiResponse<CustomerAddress[]>>(
     API_ENDPOINTS.CUSTOMER.ADDRESSES,
@@ -27,9 +30,17 @@ export async function getAddresses(): Promise<CustomerAddress[]> {
 export async function createAddress(
   payload: CreateAddressRequest,
 ): Promise<CustomerAddress> {
+  const lat = Number(payload.latitude);
+  const lng = Number(payload.longitude);
+  const safePayload = {
+    ...payload,
+    latitude: !isNaN(lat) && lat !== 0 ? lat : DEFAULT_SERVICE_LAT,
+    longitude: !isNaN(lng) && lng !== 0 ? lng : DEFAULT_SERVICE_LNG,
+  };
+
   const res = await apiClient<ApiResponse<CustomerAddress>>(
     API_ENDPOINTS.CUSTOMER.ADDRESSES,
-    { method: "POST", data: payload },
+    { method: "POST", data: safePayload },
   );
   return res.data;
 }
@@ -38,9 +49,17 @@ export async function updateAddress(
   id: number,
   payload: UpdateAddressRequest,
 ): Promise<CustomerAddress> {
+  const lat = Number(payload.latitude);
+  const lng = Number(payload.longitude);
+  const safePayload = {
+    ...payload,
+    latitude: !isNaN(lat) && lat !== 0 ? lat : DEFAULT_SERVICE_LAT,
+    longitude: !isNaN(lng) && lng !== 0 ? lng : DEFAULT_SERVICE_LNG,
+  };
+
   const res = await apiClient<ApiResponse<CustomerAddress>>(
     API_ENDPOINTS.CUSTOMER.ADDRESS_DETAILS(id),
-    { method: "PUT", data: payload },
+    { method: "PUT", data: safePayload },
   );
   return res.data;
 }

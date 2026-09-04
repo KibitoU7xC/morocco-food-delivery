@@ -8,6 +8,7 @@ interface BillDetailsProps {
   error: string | null;
   /** Explains why there's no summary yet, when applicable. */
   hint: string | null;
+  onRetry?: () => void;
 }
 
 /**
@@ -16,7 +17,7 @@ interface BillDetailsProps {
  * "packaging fee" / "eco-contribution" rows: the live API doesn't return them,
  * even though some reference designs show them.
  */
-export function BillDetails({ summary, isLoading, error, hint }: BillDetailsProps) {
+export function BillDetails({ summary, isLoading, error, hint, onRetry }: BillDetailsProps) {
   return (
     <div className="flex flex-col rounded-2xl bg-surface-container-lowest p-space-lg shadow-card">
       <h3 className="mb-space-md font-headline-sm text-headline-sm font-extrabold text-on-surface">
@@ -36,6 +37,16 @@ export function BillDetails({ summary, isLoading, error, hint }: BillDetailsProp
             Couldn&apos;t calculate your bill
           </span>
           <span className="font-body-sm text-body-sm">{error}</span>
+          {onRetry ? (
+            <button
+              type="button"
+              onClick={onRetry}
+              className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-on-error-container underline hover:no-underline cursor-pointer"
+            >
+              <Icon name="replay" size={14} />
+              Retry calculation
+            </button>
+          ) : null}
         </div>
       ) : summary ? (
         <>

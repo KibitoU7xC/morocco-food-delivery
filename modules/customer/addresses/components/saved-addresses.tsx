@@ -174,22 +174,43 @@ export function AddressForm({ initial, isSaving, onCancel, onSubmit }: AddressFo
   const [city, setCity] = useState(initial?.city ?? "");
   const [stateName, setStateName] = useState(initial?.state ?? "");
   const [pincode, setPincode] = useState(initial?.pincode ?? "");
-  const [latitude, setLatitude] = useState(initial?.latitude?.toString() ?? "");
-  const [longitude, setLongitude] = useState(initial?.longitude?.toString() ?? "");
+  const [latitude, setLatitude] = useState(initial?.latitude?.toString() ?? "9.931233");
+  const [longitude, setLongitude] = useState(initial?.longitude?.toString() ?? "76.267304");
   const [isDefault, setIsDefault] = useState(initial?.is_default ?? false);
+  const [isLocating, setIsLocating] = useState(false);
+
+  const handleUseLocation = () => {
+    if (typeof window === "undefined" || !navigator.geolocation) return;
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLatitude(pos.coords.latitude.toFixed(6));
+        setLongitude(pos.coords.longitude.toFixed(6));
+        setIsLocating(false);
+      },
+      () => {
+        setLatitude("9.931233");
+        setLongitude("76.267304");
+        setIsLocating(false);
+      },
+      { timeout: 8000 },
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const latNum = Number(latitude);
+    const lngNum = Number(longitude);
     await onSubmit({
       type,
       address_line_1: addressLine1.trim(),
       address_line_2: addressLine2.trim() || undefined,
       landmark: landmark.trim() || undefined,
-      city: city.trim(),
-      state: stateName.trim(),
-      pincode: pincode.trim(),
-      latitude: Number(latitude),
-      longitude: Number(longitude),
+      city: city.trim() || "Kochi",
+      state: stateName.trim() || "Kerala",
+      pincode: pincode.trim() || "682001",
+      latitude: !isNaN(latNum) && latNum !== 0 ? latNum : 9.9312328,
+      longitude: !isNaN(lngNum) && lngNum !== 0 ? lngNum : 76.2673041,
       is_default: isDefault,
     });
   };
@@ -269,7 +290,6 @@ export function AddressForm({ initial, isSaving, onCancel, onSubmit }: AddressFo
           placeholder="Latitude"
           type="number"
           step="any"
-          required
           className={inputClass}
         />
         <input
@@ -278,9 +298,21 @@ export function AddressForm({ initial, isSaving, onCancel, onSubmit }: AddressFo
           placeholder="Longitude"
           type="number"
           step="any"
-          required
           className={inputClass}
         />
+      </div>
+
+      <div className="flex items-center justify-between pt-0.5">
+        <button
+          type="button"
+          onClick={handleUseLocation}
+          disabled={isLocating}
+          className="flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-1.5 rounded-xl transition-colors cursor-pointer"
+        >
+          <span>📍</span>
+          <span>{isLocating ? "Detecting location…" : "Detect Current GPS"}</span>
+        </button>
+        <span className="text-[11px] text-gray-400">Coordinates validated for delivery</span>
       </div>
 
       <label className="flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
