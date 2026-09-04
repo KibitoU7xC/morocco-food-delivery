@@ -175,11 +175,11 @@ export default function Burger3D({ onLoaded }: Burger3DProps) {
   }, [onLoaded]);
 
   return (
-    <div className="relative w-full h-full min-h-[320px] sm:min-h-[460px] lg:min-h-[560px] flex items-center justify-center">
+    <div className="relative w-full h-full min-h-[260px] xs:min-h-[300px] sm:min-h-[460px] lg:min-h-[560px] flex items-center justify-center">
       {/* 3D WebGL Canvas Container */}
       <div
         ref={containerRef}
-        className="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing touch-none select-none z-20"
+        className="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing touch-pan-y select-none z-20"
       />
 
       {/* Loading Progress */}

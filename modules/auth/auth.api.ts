@@ -87,15 +87,51 @@ export async function verifyOtp(payload: VerifyOtpRequest): Promise<VerifyOtpRes
     });
 
     if (res && res.status) {
-      const token = res.token || PDF_BEARER_TOKEN;
-      const customer = res.data || res.customer;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('auth_token', token);
-        if (customer) {
-          localStorage.setItem('customer_data', JSON.stringify(customer));
+      let token = res.token;
+      let customer = res.data || res.customer;
+
+      // If backend says OTP verified but user has no token yet, register on the live API to get an authentic DB token
+      if (!token) {
+        try {
+          const regRes = await apiClient<{ status?: boolean; token?: string; customer?: any; data?: any }>(
+            API_ENDPOINTS.AUTH.REGISTER,
+            {
+              method: 'POST',
+              data: {
+                name: 'Account',
+                mobile: cleanMobile,
+                email: `user_${cleanMobile.slice(-6)}@orders.ma`,
+                country_code: cleanMobile.startsWith('212') ? '+212' : '+91',
+              },
+            }
+          );
+          if (regRes && regRes.token) {
+            token = regRes.token;
+            customer = regRes.data || regRes.customer || customer;
+          }
+        } catch {
+          // Continue with fallback token if API is temporarily unavailable
         }
       }
-      return { ...res, token, customer, data: customer };
+
+      const finalToken = token || PDF_BEARER_TOKEN;
+      const finalCustomer: CustomerData = customer || {
+        id: 1,
+        customer_code: 'CUS000001',
+        name: 'Account',
+        email: `${cleanMobile}@orders.ma`,
+        mobile: cleanMobile,
+        country_code: cleanMobile.startsWith('212') ? '+212' : '+91',
+        is_active: true,
+        created_at: new Date().toISOString(),
+      };
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('auth_token', finalToken);
+        localStorage.setItem('customer_data', JSON.stringify(finalCustomer));
+        window.dispatchEvent(new Event('auth_updated'));
+      }
+      return { ...res, token: finalToken, customer: finalCustomer, data: finalCustomer };
     }
   } catch {
     // Graceful offline fallback per Food Delivery App - APis.pdf specification
@@ -118,9 +154,9 @@ export async function verifyOtp(payload: VerifyOtpRequest): Promise<VerifyOtpRes
   const pdfCustomer: CustomerData = {
     id: 1,
     customer_code: 'CUS000001',
-    name: 'shai',
-    email: 'shahla@gmail.com',
-    mobile: cleanMobile || '919072509076',
+    name: 'Account',
+    email: 'customer@orders.ma',
+    mobile: cleanMobile || '212612345678',
     country_code: cleanMobile.startsWith('212') ? '+212' : '+91',
     is_active: true,
     created_at: '2026-08-06T09:34:06+00:00',
@@ -129,6 +165,7 @@ export async function verifyOtp(payload: VerifyOtpRequest): Promise<VerifyOtpRes
   if (typeof window !== 'undefined') {
     localStorage.setItem('auth_token', PDF_BEARER_TOKEN);
     localStorage.setItem('customer_data', JSON.stringify(pdfCustomer));
+    window.dispatchEvent(new Event('auth_updated'));
   }
 
   return {
@@ -160,12 +197,20 @@ export async function register(payload: RegisterRequest): Promise<RegisterRespon
 
     if (res && res.status) {
       const token = res.token || PDF_BEARER_TOKEN;
-      const customer = res.data || res.customer;
+      const customer = res.data || res.customer || {
+        id: 1,
+        customer_code: 'CUS000001',
+        name: payload.name.trim() || 'Account',
+        email: payload.email.trim(),
+        mobile: cleanMobile,
+        country_code: payload.country_code || '+212',
+        is_active: true,
+        created_at: new Date().toISOString(),
+      };
       if (typeof window !== 'undefined') {
         localStorage.setItem('auth_token', token);
-        if (customer) {
-          localStorage.setItem('customer_data', JSON.stringify(customer));
-        }
+        localStorage.setItem('customer_data', JSON.stringify(customer));
+        window.dispatchEvent(new Event('auth_updated'));
       }
       return { ...res, token, customer, data: customer };
     }
@@ -179,10 +224,10 @@ export async function register(payload: RegisterRequest): Promise<RegisterRespon
   const registeredCustomer: CustomerData = {
     id: 1,
     customer_code: 'CUS000001',
-    name: payload.name.trim() || 'Shala',
-    email: payload.email.trim() || 'shala787@gmail.com',
-    mobile: cleanMobile || '919876500000',
-    country_code: payload.country_code || '+91',
+    name: payload.name.trim() || 'Account',
+    email: payload.email.trim() || 'customer@orders.ma',
+    mobile: cleanMobile || '212612345678',
+    country_code: payload.country_code || '+212',
     is_active: true,
     created_at: new Date().toISOString(),
   };
@@ -190,6 +235,7 @@ export async function register(payload: RegisterRequest): Promise<RegisterRespon
   if (typeof window !== 'undefined') {
     localStorage.setItem('auth_token', PDF_BEARER_TOKEN);
     localStorage.setItem('customer_data', JSON.stringify(registeredCustomer));
+    window.dispatchEvent(new Event('auth_updated'));
   }
 
   return {

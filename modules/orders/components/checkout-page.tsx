@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Icon } from "@/components/ui/icon";
 import { PageContainer } from "@/components/ui/page-container";
@@ -31,8 +32,22 @@ interface CheckoutPageProps {
 }
 
 export function CheckoutPage({ paymentMethods }: CheckoutPageProps) {
+  const router = useRouter();
   const { isAuthenticated } = useCustomerProfile();
   const signedIn = isAuthenticated === true;
+
+  // If user logs out while on cart/checkout, redirect directly to home screen
+  useEffect(() => {
+    const handleAuthChange = () => {
+      const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+      if (!token) {
+        router.push("/");
+        router.refresh();
+      }
+    };
+    window.addEventListener("auth_updated", handleAuthChange);
+    return () => window.removeEventListener("auth_updated", handleAuthChange);
+  }, [router]);
 
   const cartState = useCart(signedIn);
   const addressesState = useAddresses(signedIn);

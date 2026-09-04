@@ -1,7 +1,10 @@
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
 import { formatMAD, initialsOf, resolveAssetUrl } from "@/lib/utils";
+import { apiClient } from "@/lib/api/client";
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import type { Cart, CartItem } from "../cart.types";
 
 interface CartItemsListProps {
@@ -13,8 +16,8 @@ interface CartItemsListProps {
 
 /**
  * Order items from the cart's (single) restaurant, with quantity controls.
- * The cart API's nested `product` never includes an image (verified live),
- * so rows fall back to an initials tile.
+ * Dynamically renders the real product images (fetched from product API if omitted by cart endpoint)
+ * and restaurant logo / cover image.
  */
 export function CartItemsList({
   cart,
@@ -23,6 +26,7 @@ export function CartItemsList({
   onRemove,
 }: CartItemsListProps) {
   const restaurant = cart.restaurant;
+  const restaurantImage = resolveAssetUrl(restaurant?.logo || restaurant?.cover_image || null);
 
   return (
     <section className="rounded-2xl bg-surface-container-lowest p-space-xl shadow-card">
@@ -30,13 +34,14 @@ export function CartItemsList({
         <div className="mb-space-lg flex items-center justify-between gap-space-md">
           <div className="flex items-center gap-space-md">
             <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-surface-container-high shadow-card text-on-surface-variant">
-              {restaurant.logo ? (
+              {restaurantImage ? (
                 <Image
-                  src={resolveAssetUrl(restaurant.logo) ?? ""}
+                  src={restaurantImage}
                   alt=""
                   width={56}
                   height={56}
                   className="h-full w-full object-cover"
+                  unoptimized
                 />
               ) : (
                 <Icon name="storefront" size={26} />
@@ -47,11 +52,18 @@ export function CartItemsList({
                 <h3 className="font-headline-sm text-headline-sm font-extrabold text-on-surface">
                   {restaurant.name}
                 </h3>
-                {restaurant.category?.name ? (
-                  <span className="rounded-md bg-secondary-fixed px-space-xs py-0.5 font-label-sm text-label-sm text-on-secondary-fixed">
-                    {restaurant.category.name}
-                  </span>
-                ) : null}
+                {(() => {
+                  const catName = typeof restaurant.category === 'object' && restaurant.category !== null
+                    ? restaurant.category.name
+                    : typeof restaurant.category === 'string'
+                      ? restaurant.category
+                      : null;
+                  return catName ? (
+                    <span className="rounded-md bg-secondary-fixed px-space-xs py-0.5 font-label-sm text-label-sm text-on-secondary-fixed">
+                      {catName}
+                    </span>
+                  ) : null;
+                })()}
               </div>
               {restaurant.city ? (
                 <span className="font-body-sm text-body-sm text-on-surface-variant">
@@ -115,14 +127,63 @@ function CartRow({
 }) {
   const unitPrice = item.variant ? Number(item.variant.price) : Number(item.product.price);
   const lineTotal = unitPrice * item.quantity;
-  const image = resolveAssetUrl(item.product.primary_image?.image ?? null);
+  
+  const initialImage =
+    item.product.primary_image?.image ||
+    (item.product as unknown as { image?: string })?.image ||
+    item.product.images?.[0]?.image ||
+    null;
+
+  const [imgUrl, setImgUrl] = useState<string | null>(resolveAssetUrl(initialImage));
+
+  useEffect(() => {
+    const current =
+      item.product.primary_image?.image ||
+      (item.product as unknown as { image?: string })?.image ||
+      item.product.images?.[0]?.image ||
+      null;
+
+    if (current) {
+      setImgUrl(resolveAssetUrl(current));
+      return;
+    }
+
+    // On-demand fetch if the backend cart endpoint omitted product images
+    let isMounted = true;
+    apiClient<{
+      success?: boolean;
+      data?: {
+        primary_image?: { image: string };
+        images?: Array<{ image: string }>;
+      };
+    }>(API_ENDPOINTS.PRODUCTS.DETAILS(item.product_id))
+      .then((res) => {
+        if (!isMounted) return;
+        const fetched = res?.data?.primary_image?.image || res?.data?.images?.[0]?.image;
+        if (fetched) {
+          setImgUrl(resolveAssetUrl(fetched));
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      isMounted = false;
+    };
+  }, [item.product_id, item.product]);
 
   return (
     <div className="flex flex-col items-start justify-between gap-space-md rounded-2xl bg-surface-container-low p-space-md sm:flex-row sm:items-center">
       <div className="flex items-start gap-space-md">
         <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-container-high shadow-card text-on-surface-variant">
-          {image ? (
-            <Image src={image} alt="" width={80} height={80} className="h-full w-full object-cover" />
+          {imgUrl ? (
+            <Image
+              src={imgUrl}
+              alt={item.product.name}
+              width={80}
+              height={80}
+              className="h-full w-full object-cover"
+              unoptimized
+            />
           ) : (
             <span className="font-headline-sm text-headline-sm text-on-surface-variant">
               {initialsOf(item.product.name, 1)}

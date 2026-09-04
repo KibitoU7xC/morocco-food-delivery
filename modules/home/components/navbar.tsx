@@ -3,10 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import LoginForm from '@/modules/auth/components/login-form';
 import { useLanguage } from '@/lib/context/language-context';
 
 export default function HomeNavbar() {
+  const router = useRouter();
   const { lang, setLang } = useLanguage();
   const [selectedCity, setSelectedCity] = useState('Casablanca, Maârif');
   const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
@@ -15,25 +17,42 @@ export default function HomeNavbar() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('auth_token');
-      const dataStr = localStorage.getItem('customer_data');
-      if (token && dataStr) {
-        try {
-          const cust = JSON.parse(dataStr);
+    const updateAuthState = () => {
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('auth_token');
+        const dataStr = localStorage.getItem('customer_data');
+        if (token) {
           setUserLoggedIn(true);
-          setCustomerName(cust.name || 'Account');
-        } catch {
-          // ignore
+          let name = 'Account';
+          if (dataStr) {
+            try {
+              const cust = JSON.parse(dataStr);
+              if (cust && cust.name) name = cust.name;
+            } catch {
+              // ignore
+            }
+          }
+          setCustomerName(name);
+        } else {
+          setUserLoggedIn(false);
+          setCustomerName(null);
         }
       }
-    }
+    };
 
+    updateAuthState();
+
+    window.addEventListener('storage', updateAuthState);
+    window.addEventListener('auth_updated', updateAuthState);
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsAuthModalOpen(false);
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('storage', updateAuthState);
+      window.removeEventListener('auth_updated', updateAuthState);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const cities = [
@@ -46,35 +65,49 @@ export default function HomeNavbar() {
     'Agadir, Centre',
   ];
 
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('customer_data');
+      localStorage.removeItem('cart_count');
+      setUserLoggedIn(false);
+      setCustomerName(null);
+      window.dispatchEvent(new Event('auth_updated'));
+      window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count: 0 } }));
+    }
+    router.push('/');
+    router.refresh();
+  };
+
   return (
     <>
-      <header className="sticky top-0 z-50 w-full bg-[#fbf8ff]/85 backdrop-blur-xl py-4 sm:py-5 px-4 sm:px-8 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <header className="sticky top-0 z-50 w-full bg-[#fbf8ff]/90 backdrop-blur-xl py-2.5 sm:py-4 px-3 sm:px-8 transition-colors duration-300 border-b border-[#e4e1ea]/40">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           {/* Left: Official Brand Logo */}
-          <Link href="/" className="flex items-center group">
-            <div className="relative h-16 sm:h-18 w-20 sm:w-24 flex items-center">
+          <Link href="/" className="flex items-center group shrink-0">
+            <div className="relative h-11 sm:h-16 w-14 sm:w-22 flex items-center">
               <Image
                 src="/logo_4096x4096.png"
                 alt="Orders au Maroc"
                 width={140}
                 height={140}
                 priority
-                className="h-full w-auto object-contain scale-125 sm:scale-135 origin-left group-hover:scale-130 sm:group-hover:scale-140 transition-transform duration-200"
+                className="h-full w-auto object-contain scale-110 sm:scale-130 origin-left group-hover:scale-115 sm:group-hover:scale-135 transition-transform duration-200"
               />
             </div>
           </Link>
 
           {/* Right: Location -> Log In / Sign Up -> EN / FR Switcher (AFTER login button) */}
-          <div className="flex items-center gap-2.5 sm:gap-3.5">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* 1. Location Pill */}
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setCityDropdownOpen(!cityDropdownOpen)}
-                className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-white shadow-xs text-[#1b1b21] text-xs sm:text-sm font-semibold border border-[#e4e1ea] hover:border-[#f5b301] transition-all cursor-pointer select-none"
+                className="flex items-center gap-1 sm:gap-2 px-2 xs:px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white shadow-xs text-[#1b1b21] text-xs sm:text-sm font-semibold border-2 border-[#d5cedd] hover:border-[#5906e7] transition-all cursor-pointer select-none"
               >
                 <svg
-                  className="w-4 h-4 text-[#f5b301] shrink-0"
+                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f5b301] shrink-0"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -87,9 +120,9 @@ export default function HomeNavbar() {
                   />
                   <circle cx="12" cy="9.5" r="2.5" />
                 </svg>
-                <span className="truncate max-w-[85px] xs:max-w-[120px] sm:max-w-none">{selectedCity}</span>
+                <span className="truncate max-w-[65px] xs:max-w-[100px] sm:max-w-none text-[11px] sm:text-xs md:text-sm">{selectedCity}</span>
                 <svg
-                  className="w-3 h-3 text-[#6b6675]"
+                  className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#6b6675] shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -104,7 +137,7 @@ export default function HomeNavbar() {
               </button>
 
               {cityDropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-[#e4e1ea] p-1.5 z-50 animate-in fade-in">
+                <div className="absolute top-full right-0 mt-2 w-52 sm:w-56 bg-white rounded-2xl shadow-xl border border-[#e4e1ea] p-1.5 z-50 animate-in fade-in">
                   {cities.map((city) => (
                     <button
                       key={city}
@@ -113,11 +146,10 @@ export default function HomeNavbar() {
                         setSelectedCity(city);
                         setCityDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
-                        selectedCity === city
+                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${selectedCity === city
                           ? 'bg-[#f5f2fb] text-[#5906e7] font-bold'
                           : 'text-[#1b1b21] hover:bg-[#f5f2fb]'
-                      }`}
+                        }`}
                     >
                       {city}
                     </button>
@@ -128,19 +160,17 @@ export default function HomeNavbar() {
 
             {/* 2. Log In / Sign Up Button */}
             {userLoggedIn ? (
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f5f2fb] text-[#5906e7] text-xs font-bold border border-[#e4e1ea]">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Link
+                  href="/profile"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-full bg-[#f5f2fb] hover:bg-[#eae7ef] text-[#5906e7] text-xs font-bold border border-[#e4e1ea] transition-colors"
+                >
                   👋 {customerName}
-                </span>
+                </Link>
                 <button
                   type="button"
-                  onClick={() => {
-                    localStorage.removeItem('auth_token');
-                    localStorage.removeItem('customer_data');
-                    setUserLoggedIn(false);
-                    setCustomerName(null);
-                  }}
-                  className="px-3 sm:px-4 py-2 rounded-full bg-[#1b1b21] hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer active:scale-95"
+                  onClick={handleLogout}
+                  className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#1b1b21] hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer active:scale-95"
                 >
                   Logout
                 </button>
@@ -149,7 +179,7 @@ export default function HomeNavbar() {
               <button
                 type="button"
                 onClick={() => setIsAuthModalOpen(true)}
-                className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 rounded-full bg-[#1b1b21] hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-xs active:scale-95 cursor-pointer shrink-0"
+                className="flex items-center gap-1 sm:gap-2 px-2.5 xs:px-3 sm:px-5 py-1.5 sm:py-2 rounded-full bg-[#1b1b21] hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-xs active:scale-95 cursor-pointer shrink-0"
               >
                 <svg
                   className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0"
@@ -169,27 +199,25 @@ export default function HomeNavbar() {
               </button>
             )}
 
-            {/* 3. EN / FR Language Switcher Pill (STRICTLY AFTER the login button) */}
-            <div className="flex items-center bg-[#f5f2fb] p-0.5 sm:p-1 rounded-full border border-[#eae7ef]/80 shadow-2xs shrink-0">
+            {/* 3. EN / FR Language Switcher Pill */}
+            <div className="flex items-center bg-[#f5f2fb] p-0.5 sm:p-1 rounded-full border border-[#eae7ef] shadow-2xs shrink-0">
               <button
                 type="button"
                 onClick={() => setLang('EN')}
-                className={`px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
-                  lang === 'EN'
+                className={`px-1.5 xs:px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 cursor-pointer ${lang === 'EN'
                     ? 'bg-white text-[#5906e7] shadow-xs'
                     : 'text-[#6b6675] hover:text-[#1b1b21]'
-                }`}
+                  }`}
               >
                 EN
               </button>
               <button
                 type="button"
                 onClick={() => setLang('FR')}
-                className={`px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
-                  lang === 'FR'
+                className={`px-1.5 xs:px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 cursor-pointer ${lang === 'FR'
                     ? 'bg-white text-[#5906e7] shadow-xs'
                     : 'text-[#6b6675] hover:text-[#1b1b21]'
-                }`}
+                  }`}
               >
                 FR
               </button>
@@ -209,7 +237,12 @@ export default function HomeNavbar() {
           <div className="relative w-full max-w-[490px] my-auto animate-in zoom-in-95 duration-200">
             <LoginForm
               initialMode="login"
-              onClose={() => setIsAuthModalOpen(false)}
+              redirectTo="/restaurants"
+              onClose={() => {
+                setIsAuthModalOpen(false);
+                router.push('/restaurants');
+                router.refresh();
+              }}
             />
           </div>
         </div>

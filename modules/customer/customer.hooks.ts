@@ -47,44 +47,55 @@ export function useCustomerProfile(): UseCustomerProfileResult {
 
   const load = useCallback(async () => {
     let token: string | null = null;
+    let cachedCustomer: CustomerProfile | null = null;
     try {
       token = window.localStorage.getItem("auth_token");
+      const cachedStr = window.localStorage.getItem("customer_data");
+      if (cachedStr) cachedCustomer = JSON.parse(cachedStr);
     } catch {
       token = null;
     }
 
-    if (!token) {
+    if (!token && !cachedCustomer) {
       setIsAuthenticated(false);
       setIsLoading(false);
       return;
     }
 
+    // Mark as authenticated immediately and populate cached profile to avoid flickering
     setIsAuthenticated(true);
+    if (cachedCustomer) {
+      setProfile(cachedCustomer);
+    }
     setIsLoading(true);
     setError(null);
+
     try {
       const data = await getCustomerProfile();
-      setProfile(data);
-      try {
-        window.localStorage.setItem("customer_data", JSON.stringify(data));
-      } catch {
-        // storage may be unavailable (private mode); non-fatal
+      if (data) {
+        setProfile(data);
+        try {
+          window.localStorage.setItem("customer_data", JSON.stringify(data));
+        } catch {
+          // non-fatal
+        }
       }
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Couldn't load your profile.";
-      if (isAuthError(message)) {
-        // Stale/expired/revoked token — drop back to the signed-out state
-        // instead of getting stuck on a dead-end error screen.
+
+      // Only drop session if we don't even have cached profile data
+      if (isAuthError(message) && !cachedCustomer) {
         try {
           window.localStorage.removeItem("auth_token");
           window.localStorage.removeItem("customer_data");
+          window.dispatchEvent(new Event("auth_updated"));
         } catch {
           // ignore
         }
         setIsAuthenticated(false);
         setProfile(null);
-      } else {
+      } else if (!cachedCustomer) {
         setError(message);
       }
     } finally {
@@ -94,6 +105,14 @@ export function useCustomerProfile(): UseCustomerProfileResult {
 
   useEffect(() => {
     void load();
+    if (typeof window !== "undefined") {
+      window.addEventListener("auth_updated", load);
+      window.addEventListener("storage", load);
+      return () => {
+        window.removeEventListener("auth_updated", load);
+        window.removeEventListener("storage", load);
+      };
+    }
   }, [load]);
 
   const update = useCallback(async (payload: UpdateProfileRequest) => {

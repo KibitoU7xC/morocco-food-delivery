@@ -10,6 +10,9 @@ export function LogoutButton() {
     try {
       window.localStorage.removeItem("auth_token");
       window.localStorage.removeItem("customer_data");
+      window.localStorage.removeItem("cart_count");
+      window.dispatchEvent(new Event("auth_updated"));
+      window.dispatchEvent(new CustomEvent("cart_updated", { detail: { count: 0 } }));
     } catch {
       // storage unavailable — nothing to clear
     }

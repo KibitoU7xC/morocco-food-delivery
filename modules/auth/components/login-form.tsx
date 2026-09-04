@@ -46,8 +46,8 @@ const CONTENT = {
     invalidEmail: 'Please enter a valid email address.',
     invalidOtp: 'Please enter all 6 digits of the verification code.',
     otpSentBanner: 'OTP sent! For testing, your code is:',
-    successLogin: 'Verified successfully! Redirecting to dashboard...',
-    successRegister: 'Account verified & created! Redirecting to dashboard...',
+    successLogin: 'Verified successfully! Redirecting to food delivery...',
+    successRegister: 'Account verified & created! Redirecting to food delivery...',
   },
   FR: {
     welcomeTitle: 'Bon retour !',
@@ -83,17 +83,19 @@ const CONTENT = {
     invalidEmail: 'Veuillez saisir une adresse email valide.',
     invalidOtp: 'Veuillez saisir le code complet à 6 chiffres.',
     otpSentBanner: 'Code OTP envoyé ! Pour tester, votre code est :',
-    successLogin: 'Vérifié avec succès ! Redirection vers le tableau de bord...',
-    successRegister: 'Compte vérifié et créé ! Redirection vers le tableau de bord...',
+    successLogin: 'Vérifié avec succès ! Redirection vers la livraison de repas...',
+    successRegister: 'Compte vérifié et créé ! Redirection vers la livraison de repas...',
   },
 };
 
 export default function LoginForm({
   initialMode = 'login',
   onClose,
+  redirectTo,
 }: {
   initialMode?: AuthMode;
   onClose?: () => void;
+  redirectTo?: string;
 } = {}) {
   const router = useRouter();
   const { lang } = useLanguage();
@@ -283,10 +285,24 @@ export default function LoginForm({
           setSuccessMsg(t.successLogin);
         }
 
-        // Only after successful verification -> move back to home page!
+        // Only after successful verification -> redirect to intended page or profile!
         setTimeout(() => {
-          router.push('/dashboard');
-          router.refresh();
+          if (onClose) onClose();
+          if (redirectTo) {
+            router.push(redirectTo);
+            router.refresh();
+          } else if (!onClose) {
+            let target = '/restaurants';
+            if (typeof window !== 'undefined') {
+              const urlParams = new URLSearchParams(window.location.search);
+              const redirect = urlParams.get('redirect');
+              if (redirect) {
+                target = redirect;
+              }
+            }
+            router.push(target);
+            router.refresh();
+          }
         }, 800);
       } else {
         setErrorMsg(verifyRes.message || 'Invalid verification code.');
@@ -439,26 +455,36 @@ export default function LoginForm({
   );
 
   return (
-    <div className="w-full max-w-[490px] mx-auto relative z-10 px-2 sm:px-0">
+    <div className="w-full max-w-[490px] mx-auto relative z-10 px-1 sm:px-0">
       {/* Focused Single-Pane Auth Card (overflow visible to allow country dropdown to float freely) */}
       <div
-        className="w-full bg-white rounded-[32px] p-7 sm:p-9 md:p-10 relative transition-all duration-300"
+        className="w-full bg-white rounded-2xl sm:rounded-[32px] p-5 xs:p-6 sm:p-9 md:p-10 relative transition-all duration-300"
         style={{
           boxShadow: '0 20px 45px -12px rgba(89, 6, 231, 0.08), 0 4px 16px rgba(0, 0, 0, 0.03)',
           border: '1px solid rgba(234, 231, 239, 0.9)',
         }}
       >
+        {/* Optional Close Button for Modal Mode */}
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-[#54525d] hover:text-[#1b1b21] flex items-center justify-center font-bold text-sm transition cursor-pointer"
+          >
+            ✕
+          </button>
+        )}
 
         {/* Headline & Subtitle */}
-        <div className="mb-7">
-          <h1 className="text-[30px] sm:text-[34px] font-extrabold text-[#1b1b21] tracking-tight leading-tight">
+        <div className="mb-6 sm:mb-7">
+          <h1 className="text-2xl xs:text-[28px] sm:text-[34px] font-extrabold text-[#1b1b21] tracking-tight leading-tight pr-6 sm:pr-0">
             {step === 'otp'
               ? t.welcomeTitle
               : mode === 'login'
                 ? t.welcomeTitle
                 : t.registerTitle}
           </h1>
-          <p className="text-[14px] sm:text-[15px] text-[#555060] mt-2 leading-relaxed">
+          <p className="text-xs xs:text-sm sm:text-[15px] text-[#555060] mt-1.5 sm:mt-2 leading-relaxed">
             {step === 'otp'
               ? t.welcomeSubtitle
               : mode === 'login'
@@ -543,7 +569,7 @@ export default function LoginForm({
               </div>
 
               {/* 6 OTP Input Boxes */}
-              <div className="flex justify-between gap-1.5 sm:gap-2">
+              <div className="flex justify-between gap-1 xs:gap-1.5 sm:gap-2">
                 {otp.map((digit, idx) => {
                   const isCurrent = activeOtpIndex === idx;
                   return (
@@ -560,10 +586,11 @@ export default function LoginForm({
                       onChange={(e) => handleOtpChange(idx, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(idx, e)}
                       onPaste={handleOtpPaste}
-                      className={`w-11 sm:w-13 h-13 sm:h-14 text-center font-bold text-xl rounded-2xl bg-white text-[#5906e7] outline-none shadow-xs transition-all duration-150 ${isCurrent
-                        ? 'border-2 border-[#5906e7] ring-2 ring-[#5906e7]/20'
-                        : 'border border-[#e8e4f3]'
-                        }`}
+                      className={`w-9 xs:w-11 sm:w-13 h-11 xs:h-13 sm:h-14 text-center font-bold text-lg sm:text-xl rounded-xl sm:rounded-2xl bg-white text-[#5906e7] outline-none shadow-xs transition-all duration-150 ${
+                        isCurrent
+                          ? 'border-2 border-[#5906e7] ring-2 ring-[#5906e7]/20'
+                          : 'border border-[#e8e4f3]'
+                      }`}
                     />
                   );
                 })}

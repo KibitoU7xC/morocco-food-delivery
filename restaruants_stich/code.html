@@ -1,0 +1,472 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Orders Morocco - Food Delivery in Casablanca</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              yellow: '#F5B301',
+              dark: '#1C1C24',
+              purple: '#6C2BD9',
+              green: '#15803d'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom Styles for clean typography and subtle hover transition -->
+<style data-purpose="custom-layout">
+    body {
+      color: #282c3f;
+      background-color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+    }
+    .restaurant-card {
+      transition: transform 0.15s ease-in-out;
+    }
+    .restaurant-card:hover {
+      transform: scale(0.98);
+    }
+    .text-truncate-single {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm" data-purpose="site-header"><!-- Top Navigation Bar inspired by IMAGE_2 -->
+  <div class="bg-white border-b border-gray-100">
+    <div class="max-w-[1240px] mx-auto px-4 h-18 flex items-center justify-between gap-6">
+      <!-- Left: Logo and Location -->
+      <div class="flex items-center gap-6 shrink-0">
+        <!-- Orange/Amber Swiggy-style Brand Icon -->
+        <a href="#" aria-label="Orders Home" class="flex items-center gap-2 group shrink-0">
+          <div class="w-10 h-10 flex items-center justify-center"><img src="https://lh3.googleusercontent.com/aida/AEtjO1V9helz2ZsDKml3jR_1gU_pY8jxmZPnORYZmkxQ8oESbo3jkVBexo99YVtJudT22fOD8-1Jr5xe31Tu2O59-vyO70KmNDq6gsXfg8I3JDrwJmBhxC9qMzaRyeSXEz66fK9tJyVLUVEvbjvlIergn6VVKc4flRhLv9j4saKrXZkK7U5UpIfNgytIkeJDZmNtQ0Wipl6ehS7xwzZ66A1pjdbER9jmY240Fc7jGVeV2AILSmbOqQU-Cl1REIxpR4dAVgAy_xVV2eCCkHw" alt="Orders au Maroc" class="w-full h-full object-contain"></div>
+          
+        </a>
+
+        <!-- Location Selector with underline on hover -->
+        <div class="flex items-center gap-1.5 cursor-pointer group shrink-0 py-1">
+          <span class="text-sm font-bold text-gray-800 border-b-2 border-gray-800 group-hover:text-[#ea580c] group-hover:border-[#ea580c] transition-colors">Casablanca, Maârif</span>
+          <span class="text-xs text-gray-500 truncate max-w-[120px] hidden sm:inline">Grand Casablanca</span>
+          <svg class="w-4 h-4 text-[#ea580c] transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Right: Action Links matching IMAGE_2 -->
+      <div class="flex items-center gap-6 lg:gap-8 shrink-0 text-[14px] font-semibold text-gray-700"><a href="#" class="flex items-center gap-2 hover:text-[#ea580c] transition-colors py-2"><svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg><span class="">Help</span></a><a href="#" class="flex items-center gap-2 hover:text-[#ea580c] transition-colors py-2"><svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg><span class="">Sign In</span></a><a href="#" class="flex items-center gap-2 hover:text-[#ea580c] transition-colors py-2"><div class="relative flex items-center justify-center"><svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg><span class="absolute -top-1 -right-1.5 w-4 h-4 bg-emerald-50 text-[#059669] text-[10px] font-bold rounded-full flex items-center justify-center border border-emerald-500">0</span></div><span class="">Cart</span></a></div>
+    </div>
+  </div>
+
+  <!-- Sub-nav: Multi-Category Services Bar directly below navigation -->
+  <div class="bg-[#fbf8ff] border-b border-gray-100 px-4 py-3 relative">
+    <div class="max-w-[1240px] mx-auto">
+      <nav class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+        <a href="#" class="bg-white rounded-2xl p-3 px-4 border border-gray-100 shadow-sm flex items-center gap-3 hover:shadow-md cursor-pointer transition-all duration-200 group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-[#ea580c]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="text-[14px] font-bold text-gray-900 leading-tight group-hover:text-amber-600 transition-colors truncate">Food Delivery</span>
+            <span class="text-xs text-gray-500 font-normal mt-0.5 truncate">1,200+ Menus</span>
+          </div>
+        </a>
+        <a href="#" class="bg-white rounded-2xl p-3 px-4 border border-gray-100 shadow-sm flex items-center gap-3 hover:shadow-md cursor-pointer transition-all duration-200 group">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-[#059669]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="text-[14px] font-bold text-gray-900 leading-tight group-hover:text-emerald-600 transition-colors truncate">Groceries</span>
+            <span class="text-xs text-gray-500 font-normal mt-0.5 truncate">15 min to door</span>
+          </div>
+        </a>
+        <a href="#" class="bg-white rounded-2xl p-3 px-4 border border-gray-100 shadow-sm flex items-center gap-3 hover:shadow-md cursor-pointer transition-all duration-200 group">
+          <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-[#7c3aed]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="text-[14px] font-bold text-gray-900 leading-tight group-hover:text-purple-700 transition-colors truncate">Express Courier</span>
+            <span class="text-xs text-gray-500 font-normal mt-0.5 truncate">Keys, packages</span>
+          </div>
+        </a>
+        <a href="#" class="bg-white rounded-2xl p-3 px-4 border border-gray-100 shadow-sm flex items-center gap-3 hover:shadow-md cursor-pointer transition-all duration-200 group">
+          <div class="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-[#e11d48]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+            </svg>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="text-[14px] font-bold text-gray-900 leading-tight group-hover:text-rose-600 transition-colors truncate">Pharmacy</span>
+            <span class="text-xs text-gray-500 font-normal mt-0.5 truncate">24/7 Parapharmacy</span>
+          </div>
+        </a>
+        <a href="#" class="bg-white rounded-2xl p-3 px-4 border border-gray-100 shadow-sm flex items-center gap-3 hover:shadow-md cursor-pointer transition-all duration-200 group col-span-2 sm:col-span-1">
+          <div class="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-[#0284c7]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zm0 0h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"></path>
+            </svg>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="text-[14px] font-bold text-gray-900 leading-tight group-hover:text-sky-600 transition-colors truncate">Shops &amp; Gifts</span>
+            <span class="text-xs text-gray-500 font-normal mt-0.5 truncate">Flowers &amp; Tech</span>
+          </div>
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Large Wide Centered Search Bar below category cards -->
+  <div class="bg-white py-4 border-b border-gray-100">
+    <div class="max-w-[860px] mx-auto px-4">
+      <div class="relative flex items-center w-full">
+        <input type="text" placeholder="Search for restaurants and food" class="w-full h-12 pl-4 pr-12 rounded-lg border border-gray-300 bg-white text-gray-800 text-[15px] placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring-0 shadow-sm">
+        <button type="button" aria-label="Search" class="absolute right-3.5 text-gray-500 hover:text-gray-700">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div></header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow max-w-[1240px] w-full mx-auto px-4 pt-9 pb-16">
+<!-- BEGIN: TitleAndFilters -->
+<section class="mb-10 pb-8 border-b border-gray-200" data-purpose="food-categories"><div class="flex items-center justify-between mb-5"><h2 class="text-[22px] md:text-[24px] font-extrabold text-[#1c1c24] tracking-tight">What's on your mind?</h2><div class="flex items-center gap-2"><button class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors shadow-sm" aria-label="Previous categories"><svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg></button><button class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors shadow-sm" aria-label="Next categories"><svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg></button></div></div><div class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-4"><a href="#" class="flex flex-col items-center group"><div class="w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-amber-50 shadow-sm border-2 border-transparent group-hover:border-[#F5B301] group-hover:scale-105 transition-all p-1"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Burger" class="w-full h-full object-cover rounded-full"></div><span class="mt-2 text-xs md:text-[13px] font-bold text-gray-800 group-hover:text-amber-600 transition-colors text-center text-truncate-single w-full">Burger</span></a><a href="#" class="flex flex-col items-center group"><div class="w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-amber-50 shadow-sm border-2 border-transparent group-hover:border-[#F5B301] group-hover:scale-105 transition-all p-1"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Pizza" class="w-full h-full object-cover rounded-full"></div><span class="mt-2 text-xs md:text-[13px] font-bold text-gray-800 group-hover:text-amber-600 transition-colors text-center text-truncate-single w-full">Pizza</span></a><a href="#" class="flex flex-col items-center group"><div class="w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-amber-50 shadow-sm border-2 border-transparent group-hover:border-[#F5B301] group-hover:scale-105 transition-all p-1"><img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Sandwich" class="w-full h-full object-cover rounded-full"></div><span class="mt-2 text-xs md:text-[13px] font-bold text-gray-800 group-hover:text-amber-600 transition-colors text-center text-truncate-single w-full">Sandwich</span></a><a href="#" class="flex flex-col items-center group"><div class="w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-amber-50 shadow-sm border-2 border-transparent group-hover:border-[#F5B301] group-hover:scale-105 transition-all p-1"><img src="https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Shawarma" class="w-full h-full object-cover rounded-full"></div><span class="mt-2 text-xs md:text-[13px] font-bold text-gray-800 group-hover:text-amber-600 transition-colors text-center text-truncate-single w-full">Shawarma</span></a><a href="#" class="flex flex-col items-center group"><div class="w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-amber-50 shadow-sm border-2 border-transparent group-hover:border-[#F5B301] group-hover:scale-105 transition-all p-1"><img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Biryani / Rice" class="w-full h-full object-cover rounded-full"></div><span class="mt-2 text-xs md:text-[13px] font-bold text-gray-800 group-hover:text-amber-600 transition-colors text-center text-truncate-single w-full">Biryani / Rice</span></a><a href="#" class="flex flex-col items-center group"><div class="w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-amber-50 shadow-sm border-2 border-transparent group-hover:border-[#F5B301] group-hover:scale-105 transition-all p-1"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrNPLTWsSkvVj4Eus25z4F9LPlL95bDUxQ__6YmSzYxq6ANiKvXs7gTBd9TYj5w6QTjg-Xr2p26GtDhOcLTHGyBTat77nq6-QwMcdG45eIO2WgZxXq9VPj-QxsPe8Gyer9CU4t4rP1uNq3pOoPkzG5dKF5_1vNrzRQfrwl4smKlSA3GIdoXV62GHfftcxB5ckkZlWESXJ4TYlQJoCGV7T4APY3XYeo4A4b7Bj6OWNe3yyvxnVSiDQv" alt="Tajine" class="w-full h-full object-cover rounded-full"></div><span class="mt-2 text-xs md:text-[13px] font-bold text-gray-800 group-hover:text-amber-600 transition-colors text-center text-truncate-single w-full">Tajine</span></a><a href="#" class="flex flex-col items-center group"><div class="w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-amber-50 shadow-sm border-2 border-transparent group-hover:border-[#F5B301] group-hover:scale-105 transition-all p-1"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuI8AjPw7Vde4FyvsQu4g0N7MGynrjPGKgmJH8Wd5d3oZVUa8isSqGUKeMSEBK2K5rvB0iuQ5PGjpftdMpNiEOuh3PTGgN3SAhebFF4wUcJWSu_SX7FAl0baIUm7-smUHKGbZJrhYWVaCDhIpOrZxOGRbw2zwBFVv1L87LEzC5CkKb79Y2sE3wVsLe1EgJNY3tZQDjaI0twJpcDmtHgNLmgeCN68lIHFKErZPPqX2DQAvtVG-5dF4G" alt="Cakes &amp; Bakery" class="w-full h-full object-cover rounded-full"></div><span class="mt-2 text-xs md:text-[13px] font-bold text-gray-800 group-hover:text-amber-600 transition-colors text-center text-truncate-single w-full">Cakes &amp; Bakery</span></a><a href="#" class="flex flex-col items-center group"><div class="w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-amber-50 shadow-sm border-2 border-transparent group-hover:border-[#F5B301] group-hover:scale-105 transition-all p-1"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9iHncldihoWqGNMSPBRrWy1_lcTq6BXq5J3aFXzicIwhbKusTx7TEoygeAAOXCosw2UJDrsTP0cMr9GDutTEZWcHxQmrDKWlUvHGNzbnGuYBMrE4W4nELbH6oeaYDTmbkeDy5XFWdUS6Oe32HsrvohvLVGRtuzqw2h5s6BJ9pKNqvmD80BIVVNoo2h1fvD5DQRsIKEzBCwUcqT2AhOn1No_KDpSt-sQly8tv4zFtoQxbSZnUAStuC" alt="Desserts" class="w-full h-full object-cover rounded-full"></div><span class="mt-2 text-xs md:text-[13px] font-bold text-gray-800 group-hover:text-amber-600 transition-colors text-center text-truncate-single w-full">Desserts</span></a></div></section><section class="mb-8" data-purpose="listing-header">
+<h1 class="text-[24px] md:text-[25px] font-extrabold text-[#1c1c24] tracking-tight">
+        Restaurants with online food delivery in Casablanca
+      </h1>
+<!-- Filter Controls Bar -->
+<div class="flex items-center flex-wrap gap-2.5 mt-5 text-sm font-medium text-gray-700">
+<!-- Sort By Dropdown Pill -->
+<div class="relative group inline-block"><button type="button" class="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-gray-300 bg-white shadow-sm hover:bg-gray-50 text-xs md:text-[13px] font-semibold text-gray-800 transition-colors"><span class="">Sort By</span><span class="text-xs text-amber-600 font-bold hidden sm:inline">• Relevance</span><svg class="w-3.5 h-3.5 text-gray-600 transition-transform group-hover:rotate-180 duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg></button><div class="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-100 rounded-xl shadow-xl py-2 z-50 hidden group-hover:block transition-all"><button class="w-full text-left px-4 py-2 text-xs md:text-sm font-bold text-amber-600 bg-amber-50/60 flex items-center justify-between"><span class="">Relevance (Default)</span><svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg></button><button class="w-full text-left px-4 py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Delivery Time</button><button class="w-full text-left px-4 py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Rating: High to Low</button><button class="w-full text-left px-4 py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Cost: Low to High</button><button class="w-full text-left px-4 py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Cost: High to Low</button></div></div>
+<!-- Fast Delivery Pill -->
+<button class="px-3.5 py-2 rounded-full border border-gray-300 bg-white shadow-sm hover:bg-gray-50 text-xs md:text-[13px]">
+          Fast Delivery
+        </button>
+<!-- Ratings 4.0+ Pill -->
+<button class="px-3.5 py-2 rounded-full border border-gray-300 bg-white shadow-sm hover:bg-gray-50 text-xs md:text-[13px]">
+          Ratings 4.0+
+        </button>
+<!-- Pure Veg / Halal -->
+<button class="px-3.5 py-2 rounded-full border border-gray-300 bg-white shadow-sm hover:bg-gray-50 text-xs md:text-[13px]">
+          100% Halal
+        </button>
+<!-- Offers Pill -->
+<button class="px-3.5 py-2 rounded-full border border-gray-300 bg-white shadow-sm hover:bg-gray-50 text-xs md:text-[13px]">
+          Offers
+        </button>
+<!-- Less than 50 MAD Pill -->
+<button class="px-3.5 py-2 rounded-full border border-gray-300 bg-white shadow-sm hover:bg-gray-50 text-xs md:text-[13px]">
+          Less than 50 MAD
+        </button>
+</div>
+</section>
+<!-- END: TitleAndFilters -->
+<!-- BEGIN: RestaurantCardsGrid -->
+<section aria-label="Available Restaurants" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10" data-purpose="restaurant-grid">
+<!-- Card 1 -->
+<article class="restaurant-card cursor-pointer group flex flex-col">
+<!-- Media Container with Dark Gradient Overlay and Promo text -->
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+<img alt="Traditional Moroccan Couscous &amp; Tagine Dishes" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrNPLTWsSkvVj4Eus25z4F9LPlL95bDUxQ__6YmSzYxq6ANiKvXs7gTBd9TYj5w6QTjg-Xr2p26GtDhOcLTHGyBTat77nq6-QwMcdG45eIO2WgZxXq9VPj-QxsPe8Gyer9CU4t4rP1uNq3pOoPkzG5dKF5_1vNrzRQfrwl4smKlSA3GIdoXV62GHfftcxB5ckkZlWESXJ4TYlQJoCGV7T4APY3XYeo4A4b7Bj6OWNe3yyvxnVSiDQv">
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end p-3">
+<span class="text-white font-extrabold text-[17px] tracking-tight uppercase drop-shadow-sm">
+              ITEMS AT 49 MAD
+            </span>
+</div>
+</div>
+<!-- Info Area -->
+<div class="pt-3 px-1 flex flex-col">
+<h2 class="font-bold text-[18px] text-gray-900 leading-snug group-hover:text-amber-600 transition-colors text-truncate-single">
+            Dar Naji Tagines
+          </h2>
+<!-- Star Rating & Time -->
+<div class="flex items-center gap-1.5 mt-0.5 text-[15px] font-bold text-gray-800">
+<span class="w-5 h-5 rounded-full bg-green-700 text-white flex items-center justify-center text-[10px]">
+              ★
+            </span>
+<span class="">4.4</span>
+<span class="text-gray-400 font-normal">•</span>
+<span class="">25-30 mins</span>
+</div>
+<!-- Cuisines -->
+<p class="text-[14px] text-gray-500 text-truncate-single mt-0.5">
+            Moroccan, Tagines, Traditional
+          </p>
+<!-- Location -->
+<p class="text-[14px] text-gray-500 text-truncate-single">
+            Maârif
+          </p>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="restaurant-card cursor-pointer group flex flex-col">
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+<img alt="Artisanal Moroccan Cakes and French Pastries" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuI8AjPw7Vde4FyvsQu4g0N7MGynrjPGKgmJH8Wd5d3oZVUa8isSqGUKeMSEBK2K5rvB0iuQ5PGjpftdMpNiEOuh3PTGgN3SAhebFF4wUcJWSu_SX7FAl0baIUm7-smUHKGbZJrhYWVaCDhIpOrZxOGRbw2zwBFVv1L87LEzC5CkKb79Y2sE3wVsLe1EgJNY3tZQDjaI0twJpcDmtHgNLmgeCN68lIHFKErZPPqX2DQAvtVG-5dF4G">
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end p-3">
+<span class="text-white font-extrabold text-[17px] tracking-tight uppercase drop-shadow-sm">
+              75 MAD OFF ABOVE 299 MAD
+            </span>
+</div>
+</div>
+<div class="pt-3 px-1 flex flex-col">
+<h2 class="font-bold text-[18px] text-gray-900 leading-snug group-hover:text-amber-600 transition-colors text-truncate-single">
+            Pâtisserie de l'Atlas
+          </h2>
+<div class="flex items-center gap-1.5 mt-0.5 text-[15px] font-bold text-gray-800">
+<span class="w-5 h-5 rounded-full bg-green-700 text-white flex items-center justify-center text-[10px]">
+              ★
+            </span>
+<span class="">4.6</span>
+<span class="text-gray-400 font-normal">•</span>
+<span class="">20-25 mins</span>
+</div>
+<p class="text-[14px] text-gray-500 text-truncate-single mt-0.5">
+            Pastries, Cakes, Desserts
+          </p>
+<p class="text-[14px] text-gray-500 text-truncate-single">
+            Gauthier
+          </p>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="restaurant-card cursor-pointer group flex flex-col">
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+<img alt="Grilled Moroccan Skewers and Tacos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHBLWwBs3fpPY1Bd-wP1ofm7rC3IiTU0BrnRZOcNq5ggD0_2hdUD7RULGFo5s5SlKEp2Yt3qDO--L0x2NtJo48r0OqKuAdxgCf2KvwHPdmNvW8Ntw6HmfaaV2M6YdPgbjCordDQNLuVdLgvbffZh6p5svgdg_Ew2m_-WO5Fi4gbgW1ZXD2tVYomCp76AD60XOBWgtNFIXKDsxSwoRRft0IpfLXWbu9MiZ7MYf4EJj4OQuXa8BxrSKh">
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end p-3">
+<span class="text-white font-extrabold text-[17px] tracking-tight uppercase drop-shadow-sm">
+              60% OFF UPTO 120 MAD
+            </span>
+</div>
+</div>
+<div class="pt-3 px-1 flex flex-col">
+<h2 class="font-bold text-[18px] text-gray-900 leading-snug group-hover:text-amber-600 transition-colors text-truncate-single">
+            Uncles Grill &amp; Tacos
+          </h2>
+<div class="flex items-center gap-1.5 mt-0.5 text-[15px] font-bold text-gray-800">
+<span class="w-5 h-5 rounded-full bg-green-700 text-white flex items-center justify-center text-[10px]">
+              ★
+            </span>
+<span class="">4.3</span>
+<span class="text-gray-400 font-normal">•</span>
+<span class="">15-20 mins</span>
+</div>
+<p class="text-[14px] text-gray-500 text-truncate-single mt-0.5">
+            Grills, French Tacos, Sandwiches
+          </p>
+<p class="text-[14px] text-gray-500 text-truncate-single">
+            Bourgogne
+          </p>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="restaurant-card cursor-pointer group flex flex-col">
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+<img alt="Moroccan Spiced Roast Chicken with Biryani Rice" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHdLQWgtsfGBegXHmKLPoJlipU8Llg4xpnR57eT1s5nVv-O-_hYsaRiMdMfzDoh7HkXPuQmL_yDQT19dbrjZ8dKwVR6PNsZTxk8aeVzbIn5JrO-6BC_t7NyicVOvLI93JURf4AtTyMMAVZw61E2i_xLx6ZxHkUl85v69rTLasdFjIoflBWCtABoPfgKmN34LZdoxvG-byEu1JGhORFvCxa3UN0VRbdB-yBhK8NTQfRuZjLN8rqrCz5">
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end p-3">
+<span class="text-white font-extrabold text-[17px] tracking-tight uppercase drop-shadow-sm">
+              50% OFF UPTO 100 MAD
+            </span>
+</div>
+</div>
+<div class="pt-3 px-1 flex flex-col">
+<h2 class="font-bold text-[18px] text-gray-900 leading-snug group-hover:text-amber-600 transition-colors text-truncate-single">
+            Al Mounia Royal Kitchen
+          </h2>
+<div class="flex items-center gap-1.5 mt-0.5 text-[15px] font-bold text-gray-800">
+<span class="w-5 h-5 rounded-full bg-green-700 text-white flex items-center justify-center text-[10px]">
+              ★
+            </span>
+<span class="">4.5</span>
+<span class="text-gray-400 font-normal">•</span>
+<span class="">30-35 mins</span>
+</div>
+<p class="text-[14px] text-gray-500 text-truncate-single mt-0.5">
+            Moroccan, Bastilla, Tagines
+          </p>
+<p class="text-[14px] text-gray-500 text-truncate-single">
+            Centre Ville
+          </p>
+</div>
+</article>
+<!-- Card 5 -->
+<article class="restaurant-card cursor-pointer group flex flex-col">
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+<img alt="Moroccan Msemen and Breakfast Specialties" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyB5tJnfYoHjAdzhpdn4EyWTCZxUBWIL3wDuOL6obRtBi_vqHfIWwrNuB9uAH1UHd8QbBsqFVT5zp4HvpETA39pKgb_Jsi4iP_WzS1N7k2NUzm9DYASs-3z5ZnqtdF83UnPGmnaSj7kick4wq0iczZqbax_7rrex36-YrXy0z96QJJHVGmioMY21eUqV03AoxZ8DPQxx-4MV2ub4I5TfSKfPLme9A4o220iP34MJQpuBnS_9V2sgI7">
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end p-3">
+<span class="text-white font-extrabold text-[17px] tracking-tight uppercase drop-shadow-sm">
+              ITEMS AT 29 MAD
+            </span>
+</div>
+</div>
+<div class="pt-3 px-1 flex flex-col">
+<h2 class="font-bold text-[18px] text-gray-900 leading-snug group-hover:text-amber-600 transition-colors text-truncate-single">
+            The Casablanca Kitchen
+          </h2>
+<div class="flex items-center gap-1.5 mt-0.5 text-[15px] font-bold text-gray-800">
+<span class="w-5 h-5 rounded-full bg-green-700 text-white flex items-center justify-center text-[10px]">
+              ★
+            </span>
+<span class="">4.1</span>
+<span class="text-gray-400 font-normal">•</span>
+<span class="">20-25 mins</span>
+</div>
+<p class="text-[14px] text-gray-500 text-truncate-single mt-0.5">
+            Breakfast, Msemen, Harira, Tea
+          </p>
+<p class="text-[14px] text-gray-500 text-truncate-single">
+            Ain Diab
+          </p>
+</div>
+</article>
+<!-- Card 6 -->
+<article class="restaurant-card cursor-pointer group flex flex-col">
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+<img alt="Fresh Steaks and Moroccan Charcoal Grills" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHgdkUSCb_-LXaTJWUMm9cqxu8B2hfUJO5JYPvNhdscPpdvHj2t3D1v6SjM_3XUk6XRUCi0-hb4si05LQ9C1IHl9-B5Bh570bds7K2iUZr23Ogv9mlhteFBWVMqooykhgEHrwH6PVr2fxDMqdQRYetrFJqsfcG_cDEv12K957hjKAGszMCtrElrujE6TiDq9iWAHU8621FKIMiMjNRCUD1EcQCsaxLpdI3VpLRW0PRw8ry8hgNzw_3">
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end p-3">
+<span class="text-white font-extrabold text-[17px] tracking-tight uppercase drop-shadow-sm">
+              ITEMS AT 65 MAD
+            </span>
+</div>
+</div>
+<div class="pt-3 px-1 flex flex-col">
+<h2 class="font-bold text-[18px] text-gray-900 leading-snug group-hover:text-amber-600 transition-colors text-truncate-single">
+            Boucherie &amp; Grillades Al Anwar
+          </h2>
+<div class="flex items-center gap-1.5 mt-0.5 text-[15px] font-bold text-gray-800">
+<span class="w-5 h-5 rounded-full bg-green-700 text-white flex items-center justify-center text-[10px]">
+              ★
+            </span>
+<span class="">4.2</span>
+<span class="text-gray-400 font-normal">•</span>
+<span class="">15-20 mins</span>
+</div>
+<p class="text-[14px] text-gray-500 text-truncate-single mt-0.5">
+            Steakhouse, BBQ, Kefta, Chops
+          </p>
+<p class="text-[14px] text-gray-500 text-truncate-single">
+            Racine
+          </p>
+</div>
+</article>
+<!-- Card 7 -->
+<article class="restaurant-card cursor-pointer group flex flex-col">
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+<img alt="Cold Shakes, Smoothies, and Cafe Delights" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAclYbH1T_tRF7kc695ETb6PF-jm7mY4AdZVZmuGeI-XWk_qQJ23uJCtQtJlWqNixfRZmNUv_529ZWM0tI1rWRCAR_T8sTPxo-5fPnbVXwlztOt211JAFXz9kjwnHwCYHVaHd256h3z5qBoJX63s1eF6mn1qm-x-gn1j8jDkG8Gp-Jf8fKP7DammvgxMjkWffL4DD9w8LyYN_2k-Kw3mtUjK4vFuWj7RWUvVGTmqH5GaFe1OepKupSr">
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end p-3">
+<span class="text-white font-extrabold text-[17px] tracking-tight uppercase drop-shadow-sm">
+              75 MAD OFF ABOVE 299 MAD
+            </span>
+</div>
+</div>
+<div class="pt-3 px-1 flex flex-col">
+<h2 class="font-bold text-[18px] text-gray-900 leading-snug group-hover:text-amber-600 transition-colors text-truncate-single">
+            Le Comptoir Shakes &amp; Cafe
+          </h2>
+<div class="flex items-center gap-1.5 mt-0.5 text-[15px] font-bold text-gray-800">
+<span class="w-5 h-5 rounded-full bg-green-700 text-white flex items-center justify-center text-[10px]">
+              ★
+            </span>
+<span class="">4.0</span>
+<span class="text-gray-400 font-normal">•</span>
+<span class="">25-30 mins</span>
+</div>
+<p class="text-[14px] text-gray-500 text-truncate-single mt-0.5">
+            Beverages, Shakes, Waffles
+          </p>
+<p class="text-[14px] text-gray-500 text-truncate-single">
+            Val Fleuri
+          </p>
+</div>
+</article>
+<!-- Card 8 -->
+<article class="restaurant-card cursor-pointer group flex flex-col">
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+<img alt="Gourmet Gelato and Moroccan Pastry Bakes" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9iHncldihoWqGNMSPBRrWy1_lcTq6BXq5J3aFXzicIwhbKusTx7TEoygeAAOXCosw2UJDrsTP0cMr9GDutTEZWcHxQmrDKWlUvHGNzbnGuYBMrE4W4nELbH6oeaYDTmbkeDy5XFWdUS6Oe32HsrvohvLVGRtuzqw2h5s6BJ9pKNqvmD80BIVVNoo2h1fvD5DQRsIKEzBCwUcqT2AhOn1No_KDpSt-sQly8tv4zFtoQxbSZnUAStuC">
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex items-end p-3">
+<span class="text-white font-extrabold text-[17px] tracking-tight uppercase drop-shadow-sm">
+              75 MAD OFF ABOVE 299 MAD
+            </span>
+</div>
+</div>
+<div class="pt-3 px-1 flex flex-col">
+<h2 class="font-bold text-[18px] text-gray-900 leading-snug group-hover:text-amber-600 transition-colors text-truncate-single">
+            Venezia Artisan Bakes
+          </h2>
+<div class="flex items-center gap-1.5 mt-0.5 text-[15px] font-bold text-gray-800">
+<span class="w-5 h-5 rounded-full bg-green-700 text-white flex items-center justify-center text-[10px]">
+              ★
+            </span>
+<span class="">4.5</span>
+<span class="text-gray-400 font-normal">•</span>
+<span class="">20-25 mins</span>
+</div>
+<p class="text-[14px] text-gray-500 text-truncate-single mt-0.5">
+            Desserts, Bakery, Gelato, Sweets
+          </p>
+<p class="text-[14px] text-gray-500 text-truncate-single">
+            Anfa
+          </p>
+</div>
+</article>
+</section>
+<!-- END: RestaurantCardsGrid -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: MainFooter -->
+<footer class="border-t border-gray-200 bg-gray-50 py-10 mt-12" data-purpose="site-footer">
+<div class="max-w-[1240px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-lg bg-[#F5B301] flex items-center justify-center text-gray-900 font-black">
+          O
+        </div>
+<span class="font-semibold text-gray-800 text-sm">Orders Morocco (Orders.ma)</span>
+<span class="">© 2026 Orders Technologies SARL. All rights reserved.</span>
+</div>
+<div class="flex gap-6 font-medium">
+<a class="hover:text-gray-900" href="#">Terms of Service</a>
+<a class="hover:text-gray-900" href="#">Privacy Policy</a>
+<a class="hover:text-gray-900" href="#">Partner with Us</a>
+<a class="hover:text-gray-900" href="#">Rabat</a>
+<a class="hover:text-gray-900" href="#">Casablanca</a>
+<a class="hover:text-gray-900" href="#">Marrakech</a>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

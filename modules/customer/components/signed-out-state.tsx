@@ -18,7 +18,7 @@ export function SignedOutState() {
         left off.
       </p>
       <Link
-        href="/login"
+        href="/login?redirect=/profile"
         className="mt-space-xs flex items-center gap-1.5 rounded-xl bg-primary-container px-space-xl py-3 font-label-lg text-label-lg text-on-primary-container transition-all hover:brightness-95"
       >
         <Icon name="login" size={18} />

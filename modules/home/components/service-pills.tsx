@@ -11,7 +11,7 @@ export default function ServicePills() {
       bgIcon: 'bg-amber-50 group-hover:bg-[#f5b301] text-amber-600 group-hover:text-white',
       borderHover: 'hover:border-[#f5b301]/70',
       titleHover: 'group-hover:text-[#c48700]',
-      href: '#beloved-brands',
+      href: '/restaurants',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -77,26 +77,26 @@ export default function ServicePills() {
   ];
 
   return (
-    <section className="w-full -mt-8 sm:-mt-10 relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+    <section className="w-full -mt-6 sm:-mt-10 relative z-20 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
         {services.map((item) => (
           <a
             key={item.id}
             href={item.href}
-            className={`group bg-white rounded-2xl p-3 sm:p-4 border border-[#e4e1ea]/80 shadow-md hover:shadow-lg ${item.borderHover} transition-all duration-200 flex items-center gap-2.5 sm:gap-3 cursor-pointer`}
+            className={`group bg-white rounded-2xl p-2.5 xs:p-3 sm:p-4 border border-[#e4e1ea]/80 shadow-xs hover:shadow-md ${item.borderHover} transition-all duration-200 flex items-center gap-2 sm:gap-3 cursor-pointer last:col-span-2 sm:last:col-span-1`}
           >
             <div
-              className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors ${item.bgIcon}`}
+              className={`w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors ${item.bgIcon}`}
             >
               {item.icon}
             </div>
             <div className="flex flex-col min-w-0">
               <span
-                className={`text-sm font-bold text-[#1b1b21] truncate transition-colors ${item.titleHover}`}
+                className={`text-xs sm:text-sm font-bold text-[#1b1b21] truncate transition-colors ${item.titleHover}`}
               >
                 {item.title}
               </span>
-              <span className="text-[11px] text-[#504533] truncate font-medium">
+              <span className="text-[10px] sm:text-[11px] text-[#504533] truncate font-medium">
                 {item.subtitle}
               </span>
             </div>

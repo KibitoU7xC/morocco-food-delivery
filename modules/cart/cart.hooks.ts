@@ -22,6 +22,19 @@ interface UseCartResult {
   removeItem: (itemId: number) => Promise<void>;
 }
 
+function syncCartCount(c: Cart | null) {
+  if (typeof window === 'undefined') return;
+  const count = !c || !Array.isArray(c.items)
+    ? 0
+    : c.items.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  try {
+    window.localStorage.setItem('cart_count', String(count));
+    window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count } }));
+  } catch {
+    // non-fatal
+  }
+}
+
 /** @param enabled Only fetch once the caller knows the customer is signed in. */
 export function useCart(enabled: boolean): UseCartResult {
   const [cart, setCart] = useState<Cart | null>(null);
@@ -33,7 +46,9 @@ export function useCart(enabled: boolean): UseCartResult {
     setIsLoading(true);
     setError(null);
     try {
-      setCart(await getCart());
+      const data = await getCart();
+      setCart(data);
+      syncCartCount(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Couldn't load your cart.");
     } finally {
@@ -49,7 +64,9 @@ export function useCart(enabled: boolean): UseCartResult {
     setMutatingItemId(itemId);
     setError(null);
     try {
-      setCart(await updateCartItem(itemId, quantity));
+      const updated = await updateCartItem(itemId, quantity);
+      setCart(updated);
+      syncCartCount(updated);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Couldn't update that item.",
@@ -63,7 +80,9 @@ export function useCart(enabled: boolean): UseCartResult {
     setMutatingItemId(itemId);
     setError(null);
     try {
-      setCart(await removeCartItem(itemId));
+      const updated = await removeCartItem(itemId);
+      setCart(updated);
+      syncCartCount(updated);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Couldn't remove that item.",

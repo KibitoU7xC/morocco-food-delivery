@@ -41,6 +41,7 @@ export interface RestaurantBrand {
   slug: string;
   description: string;
   category: string;
+  category_id?: number;
   image: string;
   rating: number;
   delivery_time: string;
@@ -48,6 +49,11 @@ export interface RestaurantBrand {
   distance: string;
   is_featured: number;
   is_popular: number;
+}
+
+export interface CategoryOption {
+  id: number | null;
+  name: string;
 }
 
 export interface RestaurantsApiResponse {

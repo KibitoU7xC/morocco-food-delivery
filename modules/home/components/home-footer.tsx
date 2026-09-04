@@ -7,8 +7,8 @@ import Image from 'next/image';
 export default function HomeFooter() {
   return (
     <footer className="w-full bg-white border-t border-[#e4e1ea]/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 mb-8 sm:mb-12">
           {/* Column 1: Brand Info */}
           <div className="space-y-4 lg:col-span-2 pr-0 lg:pr-8">
             <Link href="/" className="flex items-center gap-2 group">
@@ -136,9 +136,9 @@ export default function HomeFooter() {
         </div>
 
         {/* Bottom Copyright Row */}
-        <div className="pt-8 border-t border-[#e4e1ea]/60 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 relative flex items-center justify-center">
+        <div className="pt-6 sm:pt-8 border-t border-[#e4e1ea]/60 flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 text-center md:text-left">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 sm:w-7 sm:h-7 relative flex items-center justify-center">
               <Image
                 src="/logo_4096x4096.png"
                 alt="Orders.ma Logo"
@@ -149,7 +149,7 @@ export default function HomeFooter() {
             </div>
             <span className="text-xs font-extrabold text-[#19181f]">Orders au Maroc</span>
           </div>
-          <span className="text-xs text-[#54525d]">
+          <span className="text-[11px] sm:text-xs text-[#54525d]">
             &copy; {new Date().getFullYear()} Orders.ma Technologies SARL. All rights reserved.
           </span>
         </div>
