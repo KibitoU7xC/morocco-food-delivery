@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
   CUSTOMER: {
     PROFILE: '/api/v1/customer/profile',
     ADDRESSES: '/api/v1/customer/addresses',
+    ADDRESS_DETAILS: (id: string | number) => `/api/v1/customer/addresses/${id}`,
     WISHLIST: '/api/v1/customer/wishlist',
     WISHLIST_TOGGLE: '/api/v1/customer/wishlist/toggle',
     WALLET: '/api/v1/customer/wallet',
