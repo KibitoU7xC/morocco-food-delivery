@@ -1,6 +1,5 @@
 import React from 'react';
 import RestaurantHeader from '@/modules/restaurants/components/restaurant-header';
-import RestaurantServicesNav from '@/modules/restaurants/components/restaurant-services-nav';
 import RestaurantFooter from '@/modules/restaurants/components/restaurant-footer';
 import RestaurantDetailView from '@/modules/restaurants/components/restaurant-detail-view';
 import {
@@ -24,10 +23,7 @@ export default async function RestaurantDetailPage({ params }: PageProps) {
       {/* 1. Main Restaurant Header */}
       <RestaurantHeader />
 
-      {/* 2. Services Navigation Bar */}
-      <RestaurantServicesNav />
-
-      {/* 3. Main Restaurant Inner Content */}
+      {/* 2. Main Restaurant Inner Content */}
       <main className="flex-grow">
         {restaurant ? (
           <RestaurantDetailView
