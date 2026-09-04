@@ -8,11 +8,12 @@ import type {
   CustomerAddress,
 } from "../addresses.types";
 
-const TYPE_LABEL: Record<AddressType, string> = {
+export const ADDRESS_TYPE_LABEL: Record<AddressType, string> = {
   home: "Home",
   apartment: "Apartment",
   other: "Other",
 };
+const TYPE_LABEL = ADDRESS_TYPE_LABEL;
 
 interface SavedAddressesProps {
   addresses: CustomerAddress[];
@@ -158,14 +159,14 @@ export function SavedAddresses({
   );
 }
 
-interface AddressFormProps {
+export interface AddressFormProps {
   initial?: CustomerAddress;
   isSaving: boolean;
   onCancel: () => void;
   onSubmit: (payload: CreateAddressRequest) => Promise<void>;
 }
 
-function AddressForm({ initial, isSaving, onCancel, onSubmit }: AddressFormProps) {
+export function AddressForm({ initial, isSaving, onCancel, onSubmit }: AddressFormProps) {
   const [type, setType] = useState<AddressType>(initial?.type ?? "home");
   const [addressLine1, setAddressLine1] = useState(initial?.address_line_1 ?? "");
   const [addressLine2, setAddressLine2] = useState(initial?.address_line_2 ?? "");

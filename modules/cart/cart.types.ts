@@ -16,14 +16,21 @@ export interface CartItem {
   variant: ProductVariant | null;
 }
 
+/**
+ * A cart is scoped to a single restaurant. When the last item is removed the
+ * backend keeps the cart record but nulls out `restaurant_id`/`restaurant`
+ * (verified live 2026-09-04) — treat `restaurant: null` + `items: []` as
+ * "empty", same as `GET /cart` returning `data: null` for a customer who has
+ * never had a cart.
+ */
 export interface Cart {
   id: number;
   customer_id: number;
-  restaurant_id: number;
+  restaurant_id: number | null;
   created_at: string;
   updated_at: string;
   items: CartItem[];
-  restaurant: Restaurant;
+  restaurant: Restaurant | null;
 }
 
 export interface AddToCartRequest {

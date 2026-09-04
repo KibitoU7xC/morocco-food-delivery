@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
+import { PageContainer } from "@/components/ui/page-container";
 
-/** Shown on /profile when there's no auth token in localStorage. */
+/** Shown on /profile and /checkout when there's no auth token in localStorage. */
 export function SignedOutState() {
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-space-md px-gutter-mobile py-space-3xl text-center md:px-gutter-desktop">
+    <PageContainer className="flex flex-col items-center gap-space-md py-space-3xl text-center">
       <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-secondary-fixed text-secondary">
         <Icon name="person" size={32} />
       </span>
       <h1 className="font-headline-lg text-headline-lg text-on-surface">
-        Sign in to view your profile
+        Sign in to view your account
       </h1>
       <p className="max-w-sm font-body-md text-body-md text-on-surface-variant">
         Your account, saved addresses, payment methods and order history are
@@ -23,6 +24,6 @@ export function SignedOutState() {
         <Icon name="login" size={18} />
         Sign In
       </Link>
-    </div>
+    </PageContainer>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
+import { PageContainer } from "@/components/ui/page-container";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { useCustomerProfile } from "../customer.hooks";
 import { useAddresses } from "../addresses/addresses.hooks";
 import { useOrders } from "@/modules/orders/orders.hooks";
@@ -51,7 +52,7 @@ export function ProfileDashboard({ paymentMethods }: ProfileDashboardProps) {
 
   if (!profile) {
     return (
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-space-sm px-gutter-mobile py-space-3xl text-center md:px-gutter-desktop">
+      <PageContainer className="flex flex-col items-center gap-space-sm text-center">
         <Icon name="error" size={28} className="text-error" />
         <p className="font-body-md text-body-md text-on-surface-variant">
           {profileError ?? "Couldn't load your profile."}
@@ -63,7 +64,7 @@ export function ProfileDashboard({ paymentMethods }: ProfileDashboardProps) {
         >
           Try again
         </button>
-      </div>
+      </PageContainer>
     );
   }
 
@@ -73,14 +74,10 @@ export function ProfileDashboard({ paymentMethods }: ProfileDashboardProps) {
     null;
 
   return (
-    <div className="mx-auto w-full max-w-[1440px] px-gutter-mobile py-space-xl md:px-gutter-desktop">
-      <div className="mb-space-lg flex items-center gap-space-xs font-label-md text-on-surface-variant">
-        <Link href="/" className="transition-colors hover:text-secondary">
-          Home
-        </Link>
-        <Icon name="chevron_right" size={16} />
-        <span className="font-headline-sm text-on-surface">My Account &amp; Profile</span>
-      </div>
+    <PageContainer>
+      <Breadcrumbs
+        items={[{ label: "Home", href: "/" }, { label: "My Account & Profile" }]}
+      />
 
       <ProfileHeader
         profile={profile}
@@ -128,13 +125,13 @@ export function ProfileDashboard({ paymentMethods }: ProfileDashboardProps) {
           />
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 
 function DashboardSkeleton() {
   return (
-    <div className="mx-auto w-full max-w-[1440px] px-gutter-mobile py-space-xl md:px-gutter-desktop">
+    <PageContainer>
       <div className="mb-space-xl h-40 animate-pulse rounded-3xl bg-surface-container-lowest shadow-card" />
       <div className="grid grid-cols-1 gap-space-xl lg:grid-cols-12">
         <div className="flex flex-col gap-space-md lg:col-span-5">
@@ -148,6 +145,6 @@ function DashboardSkeleton() {
           ))}
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

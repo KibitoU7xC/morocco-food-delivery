@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"primary-fixed-dim":"#febb14","outline-variant":"#d4c4ac","surface":"#fbf8ff","error-container":"#ffdad6","on-surface":"#1b1b21","on-secondary":"#ffffff","on-secondary-container":"#ede4ff","on-primary-fixed":"#271900","inverse-primary":"#febb14","on-error":"#ffffff","tertiary-fixed-dim":"#59de9b","surface-container-highest":"#e4e1ea","primary-fixed":"#ffdea5","surface-container-low":"#f5f2fb","on-error-container":"#93000a","primary":"#7b5800","secondary":"#5906e7","on-tertiary":"#ffffff","tertiary":"#006d43","inverse-on-surface":"#f2eff8","primary-container":"#f5b301","on-background":"#1b1b21","tertiary-container":"#4fd593","on-secondary-fixed-variant":"#4f00d0","on-secondary-fixed":"#20005f","background":"#fbf8ff","surface-variant":"#e4e1ea","secondary-fixed":"#e7deff","on-primary-fixed-variant":"#5d4200","on-primary":"#ffffff","secondary-fixed-dim":"#cdbdff","surface-container":"#efecf5","error":"#ba1a1a","on-tertiary-fixed":"#002111","outline":"#827560","on-surface-variant":"#504533","surface-dim":"#dbd9e1","surface-bright":"#fbf8ff","secondary-container":"#723aff","tertiary-fixed":"#78fbb6","inverse-surface":"#303036","on-tertiary-fixed-variant":"#005232","surface-container-high":"#eae7ef","surface-container-lowest":"#ffffff","surface-tint":"#7b5800","on-primary-container":"#654800","on-tertiary-container":"#005936"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-mobile":"1rem","space-2xs":"0.25rem","space-2xl":"2rem","margin-mobile":"1rem","space-xs":"0.5rem","space-3xl":"3rem","margin-desktop":"2.5rem","space-sm":"0.75rem","space-lg":"1.25rem","gutter-desktop":"1.5rem","space-xl":"1.5rem","space-md":"1rem"},"fontFamily":{"label-lg":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"headline-xl-mobile":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-xl":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"]},"fontSize":{"label-lg":["15px",{"lineHeight":"20px","fontWeight":"700"}],"label-sm":["11px",{"lineHeight":"14px","fontWeight":"700"}],"headline-lg-mobile":["22px",{"lineHeight":"30px","fontWeight":"700"}],"headline-sm":["16px",{"lineHeight":"24px","fontWeight":"600"}],"headline-xl-mobile":["28px",{"lineHeight":"36px","fontWeight":"800"}],"headline-md":["20px",{"lineHeight":"28px","fontWeight":"700"}],"headline-lg":["28px",{"lineHeight":"36px","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-xl":["36px",{"lineHeight":"44px","fontWeight":"800"}],"label-md":["13px",{"lineHeight":"18px","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest shadow-[0_2px_12px_rgba(30,30,36,0.06)]"><div class="h-20 w-full px-gutter-mobile lg:px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg shrink-0"><div class="flex items-center gap-space-xs"><img alt="logo_512x512.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1X7EnyEGWWRJfx47oup0CQ3SGpconY-4yhWqVER24It8FNmfH2pSyUloriYOxwplu-bBaeEqUvW8xVdYOwSzD1m3NO_szyZmA7V1hR0gthkhe5nsG1dQEHCJ91HrA_83m5YFDGPVpE9IK8TWyXPZknuJPTDn32KT2VA1AQmObdHRmkwW4NZvKdfdRNx2J4g9QkpgUOYmXCpz5et2MNgab0j6_dVZ7WguFZRZVAviOGxFz2zeGeAnXpgMurIO22RTmpyR8waOe4OYg"/><div class="flex items-baseline"><span class="font-headline-md text-headline-md tracking-tight text-on-surface font-extrabold">Orders</span><span class="font-headline-md text-headline-md font-extrabold text-secondary">.ma</span></div></div><div class="h-8 w-px bg-surface-container-highest hidden sm:block"></div><button class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-xs rounded-xl hover:bg-surface-container transition-colors text-left"><span class="material-symbols-outlined text-primary-container text-[20px]">location_on</span><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface font-bold leading-tight">Casablanca, Maârif</span><span class="font-body-sm text-body-sm text-on-surface-variant">Change location</span></div><span class="material-symbols-outlined text-on-surface-variant text-[16px]">expand_more</span></button></div><div class="hidden xl:flex items-center gap-space-md flex-1 max-w-2xl mx-space-md"><div class="flex-1 relative flex items-center bg-surface-container rounded-full px-space-md py-space-xs"><span class="material-symbols-outlined text-on-surface-variant text-[20px] mr-space-xs">search</span><input class="w-full bg-transparent border-none outline-none font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/70" placeholder="Search restaurants, groceries, pharmacy, or dishes..." type="text"/><button class="flex items-center justify-center text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[18px]">tune</span></button></div><nav class="flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-bold rounded-full"><a class="px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors whitespace-nowrap" data-path="explore-food" href="#">Food</a><a class="px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors whitespace-nowrap" data-path="grocery-delivery" href="#">Grocery</a><a class="px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors whitespace-nowrap" data-path="express-courier" href="#">Courier</a><a class="px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors whitespace-nowrap" data-path="pharmacy" href="#">Pharmacy</a><a class="px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors whitespace-nowrap relative" data-path="hot-deals" href="#">Offers</a></nav></div><div class="flex items-center gap-space-sm shrink-0"><div class="hidden md:flex items-center bg-surface-container rounded-full px-space-xs py-space-2xs text-on-surface-variant"><button class="px-space-xs py-space-2xs rounded-full font-label-sm text-label-sm bg-surface-container-lowest text-on-surface shadow-sm">FR</button><button class="px-space-xs py-space-2xs rounded-full font-label-sm text-label-sm hover:text-on-surface transition-colors">AR</button><button class="px-space-xs py-space-2xs rounded-full font-label-sm text-label-sm hover:text-on-surface transition-colors">EN</button></div><a class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="support-center" href="#"><span class="material-symbols-outlined text-[20px]">help_outline</span></a><a class="flex items-center gap-space-xs px-space-md py-space-xs bg-secondary-fixed text-on-secondary-fixed font-label-md text-label-md rounded-full hover:bg-secondary-fixed-dim transition-colors" data-path="cart-checkout" href="#"><span class="material-symbols-outlined text-[18px]">shopping_bag</span><span class="hidden sm:inline">Cart</span><span class="w-5 h-5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm flex items-center justify-center font-bold">2</span></a><div class="flex items-center gap-space-xs pl-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="hidden lg:flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface font-bold leading-tight">Yassine B.</span><span class="font-body-sm text-body-sm text-on-surface-variant leading-none">Gold Member</span></div></div></div></div></header><main class="w-full pt-20 bg-surface min-h-[calc(100vh-280px)]"><div class="flex flex-col w-full">
+<!-- Dynamic Top Banner -->
+<div class="w-full bg-gradient-to-r from-primary-fixed via-primary-container to-primary-fixed-dim px-gutter-mobile lg:px-margin-desktop py-space-sm shadow-sm">
+<div class="max-w-7xl mx-auto flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs text-on-primary-fixed">
+<span class="material-symbols-outlined text-primary text-[22px]" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<span class="font-label-md text-label-md">
+<strong class="font-extrabold text-on-surface">Free delivery unlocked!</strong> Your cart exceeds 150 MAD. Complimentary express delivery to Maârif is applied.
+        </span>
+</div>
+<div class="hidden md:flex items-center gap-space-2xs bg-surface-container-lowest/80 backdrop-blur px-space-sm py-space-2xs rounded-full">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Live Courier Fleet: 14 Active nearby</span>
+</div>
+</div>
+</div>
+<!-- Main Checkout Container -->
+<div class="w-full px-gutter-mobile lg:px-margin-desktop py-space-xl max-w-7xl mx-auto">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-space-xs text-on-surface-variant mb-space-lg">
+<a class="font-label-sm text-label-sm hover:text-on-surface transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">home</span>
+        Home
+      </a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="font-label-sm text-label-sm hover:text-on-surface transition-colors" href="#">Restaurants</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="font-label-sm text-label-sm hover:text-on-surface transition-colors font-medium" href="#">Dar Naji Authentic Moroccan</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">Cart &amp; Checkout</span>
+</nav>
+<!-- Two-Column Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- LEFT COLUMN (65%) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- Section A: Delivery Address -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-xl shadow-sm">
+<div class="flex items-center justify-between mb-space-lg pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-9 h-9 rounded-xl bg-primary-fixed flex items-center justify-center text-primary font-extrabold">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-extrabold">Delivery Address</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Select your drop-off spot in Grand Casablanca</p>
+</div>
+</div>
+<button class="flex items-center gap-1 px-space-sm py-space-xs bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-xl transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+              Add New Address
+            </button>
+</div>
+<!-- Address Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md mb-space-lg">
+<!-- Selected Home Address Card -->
+<div class="relative bg-surface-container-low p-space-md rounded-2xl shadow-sm transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[22px]">home</span>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Home (Default)</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-[22px]">check_circle</span>
+</div>
+<p class="mt-space-xs font-body-md text-body-md text-on-surface font-medium leading-snug">
+                38 Rue Jules César, Apt 4B
+              </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Maârif, Casablanca • Code 20330
+              </p>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-space-xs py-space-2xs bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm rounded-full">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                  20–25 mins
+                </span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">Deliver Here</span>
+</div>
+</div>
+<!-- Alternate Address Card -->
+<div class="relative bg-surface-container-lowest p-space-md rounded-2xl hover:bg-surface-container-low transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[22px]">apartment</span>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Office</span>
+</div>
+<div class="w-5 h-5 rounded-full bg-surface-container-high"></div>
+</div>
+<p class="mt-space-xs font-body-md text-body-md text-on-surface font-medium leading-snug">
+                Twin Center, Tour Ouest, Floor 8
+              </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Boulevard Al Massira Al Khadra, Casablanca
+              </p>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-space-xs py-space-2xs bg-surface-container text-on-surface-variant font-label-sm text-label-sm rounded-full">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                  30–35 mins
+                </span>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary font-semibold">Select</button>
+</div>
+</div>
+</div>
+<!-- Special Note / Instructions Input -->
+<div class="relative bg-surface-container rounded-xl p-space-sm flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">edit_note</span>
+<input class="w-full bg-transparent outline-none font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/70" placeholder="Add delivery note (e.g., ring doorbell 4B, extra harissa, call upon arrival)..." type="text"/>
+<span class="font-label-sm text-label-sm text-outline-variant whitespace-nowrap">Optional</span>
+</div>
+</section>
+<!-- Section B: Order Items from Restaurant -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-xl shadow-sm">
+<!-- Restaurant Header -->
+<div class="flex items-center justify-between mb-space-lg pb-space-sm">
+<div class="flex items-center gap-space-md">
+<img class="w-14 h-14 rounded-2xl object-cover shadow-sm" data-alt="Rich Moroccan gourmet tagine dish prepared with braised meats, herbs, and vibrant culinary presentation at Dar Naji Casablanca with golden warmth" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa8pS_l5X_a1N1FLxgpNFqFaG6GJA4LxGGbhCww7BBNz4PquUTid7Unznq9Hrzq1i_jl6T8EPXzet5BVsEKQOFyUwzZGx3yg6QRSeiDJdE9oYMo6FfPB4e9d8BSAe40RZTaMSiPwmKxtDERku5kL7qf95L1ycSd4juRCkVnfbPAIh4gJOWcHgwV1E84QK7NeZ8lrHJDr8V1XHMENHUjAippIEpvQLoNxY81Hxvd_8Oj3u3nMY3nZV-"/>
+<div>
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-extrabold">Dar Naji</h3>
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="px-space-xs py-space-2xs bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm rounded-md">Authentic Moroccan</span>
+</div>
+<div class="flex items-center gap-space-sm mt-0.5 text-on-surface-variant">
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface font-bold">
+<span class="material-symbols-outlined text-primary-container text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    4.4 (1.2k+ reviews)
+                  </span>
+<span class="text-outline-variant">•</span>
+<span class="font-body-sm text-body-sm">Maârif, Casablanca</span>
+</div>
+</div>
+</div>
+<a class="hidden sm:flex items-center gap-1 font-label-md text-label-md text-secondary hover:text-on-secondary-fixed-variant transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+              View Full Menu
+            </a>
+</div>
+<!-- Items List -->
+<div class="flex flex-col gap-space-md">
+<!-- Item 1: Lamb Shank Tajine -->
+<div class="bg-surface-container-low rounded-2xl p-space-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<img class="w-20 h-20 rounded-xl object-cover shadow-sm shrink-0" data-alt="Appetizing slow-cooked Moroccan lamb shank tajine surrounded by sweet caramelized prunes, golden roasted almonds, and sesame seeds with warm sauce" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_PffI8dUBzNUy3wcs2MV5uM0K7s6qGHq1_CeAxApj2khkle_otAWn-Og2vvuy84MxXiu7Zi2V7s7fSv0F_p1WlU3-507Hx2_bXLbjCF9VTeC_RDqIDOoL9Qnk4Ww31eP9k6geH8sKDP1hOfJuGKX1PTym1L1Bl68poxFSSsMwRbdV8_FifW-PFhiY2yoLYvxBVuDLp3Gj5S3jss-UdSu-EcWr4Ur3UAeFicw_oBgfZ1dEY0a1OFQ2"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="w-3 h-3 rounded-sm bg-error flex items-center justify-center text-[8px] text-on-error font-bold">•</span>
+<h4 class="font-label-lg text-label-lg text-on-surface font-bold">Lamb Shank Tajine with Prunes &amp; Almonds</h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2 max-w-md">
+                    Slow-cooked tender Moroccan shank, caramelized prunes, toasted sesame and almonds, served with warm crusty khobz bread.
+                  </p>
+<span class="font-label-md text-label-md text-on-surface font-extrabold mt-space-xs">95.00 MAD</span>
+</div>
+</div>
+<!-- Quantity Controls -->
+<div class="flex items-center justify-between sm:justify-end gap-space-lg w-full sm:w-auto">
+<div class="flex items-center bg-surface-container-lowest rounded-xl p-space-2xs shadow-sm">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<span class="w-8 text-center font-label-md text-label-md text-on-surface font-bold">1</span>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-extrabold min-w-[70px] text-right">95.00 MAD</span>
+</div>
+</div>
+<!-- Item 2: Chicken Pastilla -->
+<div class="bg-surface-container-low rounded-2xl p-space-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<img class="w-20 h-20 rounded-xl object-cover shadow-sm shrink-0" data-alt="Traditional Moroccan chicken pastilla pie with golden crisp warqa pastry dusted with delicate cinnamon and sugar patterns garnished with crunchy almonds" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMonBAOUqiGbbSN73IYZLCd_Yb1F5Szldkc-QFNBy-MnnIzFO-ZMxMf_GkQT9HlWg9FGWf11oOMFhf469rkNB2e3kEvCBUAVwKHaSQkbp9nSn1dQekNoXfjzhwQMwvDT-bSIkIP2KN7t8xprKWsJpS8ZtJ7a_aMClOfSZP5bxSj4IbuWVK_MUf9pgVA9ev5ElgDguk8R-PF4VSbVJIkyHSUlqBqOgibwfRcEXwsRwAoojxDWGcIhHp"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="w-3 h-3 rounded-sm bg-error flex items-center justify-center text-[8px] text-on-error font-bold">•</span>
+<h4 class="font-label-lg text-label-lg text-on-surface font-bold">Chicken Pastilla Traditional</h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2 max-w-md">
+                    Crispy warqa pastry layers stuffed with shredded tender spiced chicken, crunchy roasted almonds, cinnamon &amp; orange blossom essence.
+                  </p>
+<span class="font-label-md text-label-md text-on-surface font-extrabold mt-space-xs">65.00 MAD</span>
+</div>
+</div>
+<!-- Quantity Controls -->
+<div class="flex items-center justify-between sm:justify-end gap-space-lg w-full sm:w-auto">
+<div class="flex items-center bg-surface-container-lowest rounded-xl p-space-2xs shadow-sm">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<span class="w-8 text-center font-label-md text-label-md text-on-surface font-bold">1</span>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-extrabold min-w-[70px] text-right">65.00 MAD</span>
+</div>
+</div>
+</div>
+<!-- Add More Items CTA -->
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<button class="flex items-center gap-space-xs font-label-md text-label-md text-secondary hover:text-on-secondary-fixed-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+              Add more items from Dar Naji
+            </button>
+<span class="font-body-sm text-body-sm text-on-surface-variant">2 distinct dishes in cart</span>
+</div>
+<!-- Environmental & Contactless Options -->
+<div class="mt-space-lg pt-space-md bg-surface-container rounded-2xl p-space-md flex flex-col md:flex-row gap-space-md justify-between">
+<label class="flex items-center gap-space-sm cursor-pointer select-none">
+<input checked="" class="w-5 h-5 rounded-md text-secondary accent-secondary cursor-pointer" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-tertiary text-[18px]">eco</span>
+                  Don't send plastic cutlery
+                </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Help reduce single-use plastic waste in Casablanca.</span>
+</div>
+</label>
+<label class="flex items-center gap-space-sm cursor-pointer select-none">
+<input class="w-5 h-5 rounded-md text-secondary accent-secondary cursor-pointer" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[18px]">door_front</span>
+                  Contactless Delivery
+                </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Rider leaves order at door step and calls you.</span>
+</div>
+</label>
+</div>
+</section>
+<!-- Section C: Payment Method Selection -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-xl shadow-sm">
+<div class="flex items-center justify-between mb-space-lg pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-9 h-9 rounded-xl bg-secondary-fixed flex items-center justify-center text-secondary font-extrabold">
+<span class="material-symbols-outlined text-[20px]">credit_card</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-extrabold">Payment Method</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Safe transactions supported by national banking gateway</p>
+</div>
+</div>
+<div class="flex items-center gap-1 px-space-xs py-space-2xs bg-tertiary-fixed text-on-tertiary-fixed rounded-lg font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+              Secured by CMI Morocco
+            </div>
+</div>
+<div class="flex flex-col gap-space-md" id="payment-options">
+<!-- Radio Option 1: CMI Bank Card (Active) -->
+<label class="relative flex items-start justify-between p-space-md bg-surface-container-low rounded-2xl cursor-pointer transition-all">
+<div class="flex items-start gap-space-md">
+<input checked="" class="mt-1 w-5 h-5 accent-secondary cursor-pointer" name="payment-method" type="radio"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">CMI Bank Card (Visa / Mastercard)</span>
+<span class="px-space-xs py-space-2xs bg-secondary text-on-secondary font-label-sm text-label-sm rounded-md font-bold">Fast 1-Click</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Attijariwafa Bank • ending in <strong class="text-on-surface font-mono">•••• 9021</strong> (Expires 09/27)
+                  </p>
+<div class="flex items-center gap-space-xs mt-space-xs">
+<span class="px-2 py-0.5 bg-surface-container-lowest rounded text-[10px] font-bold text-on-surface shadow-sm">VISA</span>
+<span class="px-2 py-0.5 bg-surface-container-lowest rounded text-[10px] font-bold text-on-surface shadow-sm">MASTERCARD</span>
+<span class="px-2 py-0.5 bg-surface-container-lowest rounded text-[10px] font-bold text-on-surface shadow-sm">CMI CERTIFIED</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[24px]">verified_user</span>
+</label>
+<!-- Radio Option 2: Cash on Delivery -->
+<label class="relative flex items-start justify-between p-space-md bg-surface-container-lowest hover:bg-surface-container-low rounded-2xl cursor-pointer transition-all">
+<div class="flex items-start gap-space-md">
+<input class="mt-1 w-5 h-5 accent-secondary cursor-pointer" name="payment-method" type="radio"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Cash on Delivery (Paiement à la livraison)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Pay with Moroccan Dirham notes or coins directly to the courier on arrival.
+                  </p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[24px]">payments</span>
+</label>
+<!-- Radio Option 3: Orders Pay Wallet -->
+<label class="relative flex items-start justify-between p-space-md bg-surface-container-lowest hover:bg-surface-container-low rounded-2xl cursor-pointer transition-all">
+<div class="flex items-start gap-space-md">
+<input class="mt-1 w-5 h-5 accent-secondary cursor-pointer" name="payment-method" type="radio"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Orders Pay Wallet</span>
+<span class="px-space-xs py-space-2xs bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm rounded-md font-bold">Balance: 85.00 MAD</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Use available balance and settle the remaining 61.00 MAD with card or cash.
+                  </p>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[24px]">account_balance_wallet</span>
+</label>
+</div>
+</section>
+</div>
+<!-- RIGHT COLUMN (35%) - BILL & CHECKOUT SUMMARY -->
+<div class="lg:col-span-4 flex flex-col gap-space-md sticky top-24">
+<!-- Promo Coupon Box -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[20px]">local_offer</span>
+              Coupons &amp; Vouchers
+            </span>
+<span class="font-label-sm text-label-sm text-secondary font-bold cursor-pointer hover:underline">View All</span>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container rounded-xl p-space-2xs mb-space-xs">
+<input class="w-full bg-transparent px-space-xs uppercase font-label-md text-label-md text-on-surface font-extrabold outline-none tracking-wider" type="text" value="ORDERSGOLD"/>
+<button class="px-space-md py-space-xs bg-secondary text-on-secondary rounded-lg font-label-sm text-label-sm font-bold hover:bg-on-secondary-fixed-variant transition-colors">
+              Applied
+            </button>
+</div>
+<div class="flex items-center gap-1 text-tertiary font-label-sm text-label-sm bg-tertiary-fixed/30 px-space-xs py-space-2xs rounded-lg">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>Coupon savings: <strong>20.00 MAD</strong> applied successfully!</span>
+</div>
+</div>
+<!-- Bill Details Summary Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-extrabold mb-space-md">Bill Details</h3>
+<div class="flex flex-col gap-space-sm font-body-md text-body-md text-on-surface-variant">
+<div class="flex items-center justify-between">
+<span>Item Total</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">160.00 MAD</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1">
+                Delivery Partner Fee
+                <span class="material-symbols-outlined text-[16px] text-outline-variant cursor-pointer" title="Calculated based on distance to Maârif">info</span>
+</span>
+<div class="flex items-center gap-space-xs">
+<span class="line-through text-outline-variant font-body-sm text-body-sm">15.00 MAD</span>
+<span class="font-label-md text-label-md text-tertiary font-extrabold">FREE with Gold</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1">
+                Service &amp; Processing
+                <span class="material-symbols-outlined text-[16px] text-outline-variant cursor-pointer" title="Ensures continuous customer support and live tracking">info</span>
+</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">3.00 MAD</span>
+</div>
+<div class="flex items-center justify-between">
+<span>Restaurant Packaging Fee</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">2.00 MAD</span>
+</div>
+<div class="flex items-center justify-between text-tertiary font-medium">
+<span>Coupon Discount (ORDERSGOLD)</span>
+<span class="font-label-md text-label-md text-tertiary font-bold">−20.00 MAD</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1">
+                Morocco Eco-Contribution
+                <span class="material-symbols-outlined text-[16px] text-outline-variant cursor-pointer" title="Supports local sustainable packaging recycling programs">eco</span>
+</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">1.00 MAD</span>
+</div>
+</div>
+<!-- Total Due -->
+<div class="my-space-md pt-space-md bg-surface-container-high rounded-xl p-space-md flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold uppercase tracking-wider">Total Payable</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Includes all municipal taxes</span>
+</div>
+<div class="flex items-baseline gap-1 text-right">
+<span class="font-headline-lg text-headline-lg text-on-surface font-extrabold">146.00</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">MAD</span>
+</div>
+</div>
+<!-- Big Primary Action Button -->
+<button class="w-full bg-primary-container hover:bg-primary-fixed-dim active:bg-primary text-on-surface font-headline-sm text-headline-sm font-extrabold py-space-md px-space-lg rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-between group" id="btn-place-order">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[24px]">lock</span>
+<span>Proceed to Pay</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span>146.00 MAD</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</button>
+<!-- Cancellation Notice -->
+<div class="mt-space-md flex items-start gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-outline-variant text-[18px] shrink-0 mt-0.5">timer</span>
+<p class="font-body-sm text-body-sm">
+<strong>Order Flexibility:</strong> Cancellations are permitted with 100% refund within 60 seconds after dispatch acknowledgment.
+            </p>
+</div>
+<!-- Trust Badges -->
+<div class="mt-space-lg pt-space-md bg-surface-container-low rounded-xl p-space-sm flex items-center justify-around text-center">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-tertiary text-[22px]">restaurant</span>
+<span class="font-label-sm text-label-sm text-on-surface font-bold mt-1">100% Halal</span>
+<span class="text-[10px] text-on-surface-variant leading-none">Moroccan Verified</span>
+</div>
+<div class="h-8 w-px bg-surface-container-highest"></div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-secondary text-[22px]">security</span>
+<span class="font-label-sm text-label-sm text-on-surface font-bold mt-1">3D-Secure</span>
+<span class="text-[10px] text-on-surface-variant leading-none">CMI Protected</span>
+</div>
+<div class="h-8 w-px bg-surface-container-highest"></div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-[22px]">radar</span>
+<span class="font-label-sm text-label-sm text-on-surface font-bold mt-1">Live GPS</span>
+<span class="text-[10px] text-on-surface-variant leading-none">Realtime Courier</span>
+</div>
+</div>
+</div>
+<!-- Rider Tip Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">two_wheeler</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">Add Courier Tip</span>
+</div>
+<span class="font-body-sm text-body-sm text-tertiary font-semibold">100% goes to driver</span>
+</div>
+<div class="grid grid-cols-4 gap-space-xs mt-space-xs">
+<button class="py-space-xs rounded-xl bg-surface-container font-label-md text-label-md text-on-surface hover:bg-primary-fixed transition-colors font-bold">+5 MAD</button>
+<button class="py-space-xs rounded-xl bg-primary-fixed text-on-primary-fixed font-label-md text-label-md font-bold shadow-sm">+10 MAD</button>
+<button class="py-space-xs rounded-xl bg-surface-container font-label-md text-label-md text-on-surface hover:bg-primary-fixed transition-colors font-bold">+20 MAD</button>
+<button class="py-space-xs rounded-xl bg-surface-container font-label-md text-label-md text-on-surface hover:bg-primary-fixed transition-colors font-bold">Custom</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Simple micro-interaction for the checkout action
+  const checkoutBtn = document.getElementById('btn-place-order');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function() {
+      const originalHTML = this.innerHTML;
+      this.innerHTML = `
+        <div class="flex items-center justify-center gap-space-xs w-full">
+          <span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span>
+          <span>Connecting to CMI Gateway...</span>
+        </div>
+      `;
+      this.disabled = true;
+      setTimeout(() => {
+        this.innerHTML = `
+          <div class="flex items-center justify-center gap-space-xs w-full text-on-secondary bg-tertiary py-space-2xs rounded-xl">
+            <span class="material-symbols-outlined text-[22px]">check_circle</span>
+            <span>Order Confirmed #ORD-78921</span>
+          </div>
+        `;
+      }, 1600);
+    });
+  }
+</script></main><footer class="w-full bg-surface-container-low mt-space-3xl py-space-3xl"><div class="w-full px-gutter-mobile lg:px-margin-desktop"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-space-2xl mb-space-2xl"><div class="lg:col-span-2 flex flex-col gap-space-md"><div class="flex items-center gap-space-xs"><img alt="logo_512x512.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1X7EnyEGWWRJfx47oup0CQ3SGpconY-4yhWqVER24It8FNmfH2pSyUloriYOxwplu-bBaeEqUvW8xVdYOwSzD1m3NO_szyZmA7V1hR0gthkhe5nsG1dQEHCJ91HrA_83m5YFDGPVpE9IK8TWyXPZknuJPTDn32KT2VA1AQmObdHRmkwW4NZvKdfdRNx2J4g9QkpgUOYmXCpz5et2MNgab0j6_dVZ7WguFZRZVAviOGxFz2zeGeAnXpgMurIO22RTmpyR8waOe4OYg"/><span class="font-headline-md text-headline-md tracking-tight text-on-surface font-extrabold">Orders<span class="text-secondary">.ma</span></span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Hyper-convenient on-demand delivery ecosystem in Morocco. Savor restaurant meals, stock up fresh groceries, book courier dispatch, and access pharmacies in minutes.</p><div class="flex items-center gap-space-sm pt-space-xs"><div class="px-space-md py-space-xs bg-surface-container-lowest rounded-xl flex items-center gap-space-xs shadow-sm"><span class="material-symbols-outlined text-tertiary text-[22px]">verified_user</span><span class="font-label-sm text-label-sm text-on-surface">CMI Certified Moroccan Payment</span></div><div class="px-space-md py-space-xs bg-surface-container-lowest rounded-xl flex items-center gap-space-xs shadow-sm"><span class="material-symbols-outlined text-primary text-[22px]">payments</span><span class="font-label-sm text-label-sm text-on-surface">Cash on Delivery Available</span></div></div></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-label-lg text-on-surface font-bold">Platform Services</span><nav class="flex flex-col gap-space-xs"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="explore-food" href="#">Food &amp; Dining</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="grocery-delivery" href="#">Supermarket &amp; Fresh Groceries</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="express-courier" href="#">Express Courier (Colis Express)</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="pharmacy" href="#">Pharmacy &amp; Health 24/7</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="hot-deals" href="#">Daily Saffron Promos</a></nav></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-label-lg text-on-surface font-bold">Available Cities</span><div class="flex flex-col gap-space-xs"><span class="font-body-md text-body-md text-on-surface-variant">Casablanca (Grand Casablanca)</span><span class="font-body-md text-body-md text-on-surface-variant">Rabat &amp; Salé</span><span class="font-body-md text-body-md text-on-surface-variant">Marrakech (Guéliz &amp; Médina)</span><span class="font-body-md text-body-md text-on-surface-variant">Tangier (Tanger-Assilah)</span><span class="font-body-md text-body-md text-on-surface-variant">Agadir (Souss-Massa)</span></div></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-label-lg text-on-surface font-bold">Download Orders App</span><p class="font-body-sm text-body-sm text-on-surface-variant">Get faster orders and exclusive app-only discounts.</p><div class="flex flex-col gap-space-xs"><button class="w-full bg-surface-container-highest hover:bg-surface-container-high text-on-surface px-space-md py-space-xs rounded-xl flex items-center justify-center gap-space-xs transition-colors"><span class="material-symbols-outlined text-[20px]">phone_iphone</span><span class="font-label-md text-label-md">iOS App Store</span></button><button class="w-full bg-surface-container-highest hover:bg-surface-container-high text-on-surface px-space-md py-space-xs rounded-xl flex items-center justify-center gap-space-xs transition-colors"><span class="material-symbols-outlined text-[20px]">android</span><span class="font-label-md text-label-md">Google Play Store</span></button></div></div></div><div class="pt-space-xl border-t border-surface-container-highest flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-surface-variant"><p>© 2025 Orders.ma Tech SARL. All rights reserved. Registered under Moroccan Commercial Law.</p><div class="flex items-center gap-space-lg"><a class="hover:text-on-surface transition-colors" data-path="privacy-terms" href="#">Privacy Policy</a><a class="hover:text-on-surface transition-colors" data-path="privacy-terms" href="#">Terms of Service</a><a class="hover:text-on-surface transition-colors" data-path="support-center" href="#">Help Center</a></div></div></div></footer></body></html>

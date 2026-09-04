@@ -9,9 +9,9 @@ interface OngoingDeliveryCardProps {
 }
 
 /**
- * Order records from GET /api/v1/orders don't include a restaurant name/photo
- * or item list (see orders.types.ts) — this card shows only what's actually
- * on the record: order number, status, address and amount.
+ * Order records from GET /api/v1/orders include a slim `restaurant` and
+ * `payment_details.items` (verified live 2026-09-04 by placing a real order)
+ * — no photo, so the icon tile stays a placeholder.
  */
 export function OngoingDeliveryCard({ order, isLoading }: OngoingDeliveryCardProps) {
   if (isLoading) {
@@ -57,11 +57,17 @@ export function OngoingDeliveryCard({ order, isLoading }: OngoingDeliveryCardPro
             <div className="flex flex-col gap-0.5">
               <div className="flex items-center gap-2">
                 <span className="font-headline-sm text-on-surface">
-                  Order #{order.order_number}
+                  {order.restaurant?.name ?? `Order #${order.order_number}`}
                 </span>
                 <OrderStatusBadge status={order.status} />
               </div>
-              {order.delivery_address ? (
+              {order.payment_details?.items?.length ? (
+                <span className="line-clamp-1 max-w-xs font-body-sm text-on-surface-variant">
+                  {order.payment_details.items
+                    .map((item) => `${item.quantity}x ${item.product_name}`)
+                    .join(", ")}
+                </span>
+              ) : order.delivery_address ? (
                 <span className="font-body-sm text-on-surface-variant">
                   {order.delivery_address}
                 </span>

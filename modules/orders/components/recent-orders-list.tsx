@@ -79,6 +79,9 @@ export function RecentOrdersList({
 
 function OrderCard({ order }: { order: Order }) {
   const reorderHref = order.restaurant_id ? `/restaurants/${order.restaurant_id}` : null;
+  const itemsSummary = order.payment_details?.items
+    ?.map((item) => `${item.quantity}x ${item.product_name}`)
+    .join(", ");
 
   return (
     <article className="flex flex-col gap-space-sm rounded-3xl bg-surface-container-lowest p-space-md shadow-card md:p-space-lg">
@@ -90,11 +93,15 @@ function OrderCard({ order }: { order: Order }) {
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <h4 className="font-headline-sm text-on-surface">
-                {order.restaurant_name ?? `Order #${order.order_number}`}
+                {order.restaurant?.name ?? `Order #${order.order_number}`}
               </h4>
               <OrderStatusBadge status={order.status} />
             </div>
-            {order.delivery_address ? (
+            {itemsSummary ? (
+              <span className="line-clamp-1 max-w-md font-body-sm text-on-surface-variant">
+                {itemsSummary}
+              </span>
+            ) : order.delivery_address ? (
               <span className="font-body-sm text-on-surface-variant">
                 {order.delivery_address}
               </span>
