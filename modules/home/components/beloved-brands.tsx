@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { getBelovedBrands, getRestaurantCategories } from '../home.api';
 import { RestaurantBrand, CategoryOption } from '../home.types';
 
@@ -205,21 +206,30 @@ export default function BelovedBrands() {
             </button>
 
             {/* Brand Logo & Name */}
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden mx-auto mb-3 sm:mb-4 p-1 bg-[#f7f5fa] border-2 border-[#e6e2ea] flex items-center justify-center">
-              {selectedBrand.image && !imageErrors[selectedBrand.id] ? (
-                <img
-                  src={selectedBrand.image}
-                  alt={selectedBrand.name}
-                  className="w-full h-full object-cover rounded-full"
-                />
-              ) : (
-                <div className="w-full h-full rounded-full bg-gradient-to-br from-[#5906e7] to-[#803bf5] text-white font-black text-2xl sm:text-3xl flex items-center justify-center">
-                  {selectedBrand.name.charAt(0).toUpperCase()}
-                </div>
-              )}
-            </div>
+            <Link
+              href={`/restaurants/${selectedBrand.id}`}
+              onClick={() => setSelectedBrand(null)}
+              className="group block mx-auto text-center cursor-pointer"
+            >
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden mx-auto mb-3 sm:mb-4 p-1 bg-[#f7f5fa] border-2 border-[#e6e2ea] group-hover:border-[#5906e7] group-hover:scale-105 transition-all duration-200 flex items-center justify-center shadow-xs">
+                {selectedBrand.image && !imageErrors[selectedBrand.id] ? (
+                  <img
+                    src={selectedBrand.image}
+                    alt={selectedBrand.name}
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-[#5906e7] to-[#803bf5] text-white font-black text-2xl sm:text-3xl flex items-center justify-center">
+                    {selectedBrand.name.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </div>
 
-            <h3 className="text-lg sm:text-xl font-extrabold text-[#19181f]">{selectedBrand.name}</h3>
+              <h3 className="text-lg sm:text-xl font-extrabold text-[#19181f] group-hover:text-[#5906e7] transition-colors">
+                {selectedBrand.name}
+              </h3>
+            </Link>
+
             <p className="text-xs text-[#54525d] mt-1 font-medium leading-relaxed">
               {selectedBrand.description}
             </p>
@@ -247,13 +257,13 @@ export default function BelovedBrands() {
             </div>
 
             {/* CTA */}
-            <button
-              type="button"
+            <Link
+              href={`/restaurants/${selectedBrand.id}`}
               onClick={() => setSelectedBrand(null)}
-              className="w-full py-3 px-5 rounded-2xl bg-[#5906e7] hover:bg-[#4502b8] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#5906e7]/25 transition cursor-pointer active:scale-95"
+              className="w-full flex items-center justify-center py-3 px-5 rounded-2xl bg-[#5906e7] hover:bg-[#4502b8] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#5906e7]/25 transition cursor-pointer active:scale-95 text-center"
             >
               View Menu &amp; Order
-            </button>
+            </Link>
           </div>
         </div>
       )}
