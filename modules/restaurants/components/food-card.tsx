@@ -1,37 +1,83 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FoodProductItem } from '../restaurants.types';
-import { addFoodToCart } from '../restaurants.api';
+import { updateFoodCartQuantity } from '../restaurants.api';
 
 interface FoodCardProps {
   food: FoodProductItem;
+  initialQuantity?: number;
   onAddedToCart?: (food: FoodProductItem) => void;
+  onQuantityChange?: (food: FoodProductItem, newQuantity: number) => void;
   priority?: boolean;
 }
 
-export default function FoodCard({ food, onAddedToCart, priority }: FoodCardProps) {
-  const [isAdding, setIsAdding] = useState(false);
-  const [isAdded, setIsAdded] = useState(false);
+export default function FoodCard({
+  food,
+  initialQuantity = 0,
+  onAddedToCart,
+  onQuantityChange,
+  priority,
+}: FoodCardProps) {
+  const [quantity, setQuantity] = useState(initialQuantity);
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  const handleAddToCart = async (e: React.MouseEvent) => {
+  // Sync if initialQuantity prop changes
+  useEffect(() => {
+    setQuantity(initialQuantity);
+  }, [initialQuantity]);
+
+  // Reset count if cart is cleared (e.g. order placed)
+  useEffect(() => {
+    const handleCartUpdated = (e: Event) => {
+      const customEvent = e as CustomEvent<{ count: number }>;
+      if (customEvent.detail && customEvent.detail.count === 0) {
+        setQuantity(0);
+      }
+    };
+    window.addEventListener('cart_updated', handleCartUpdated);
+    return () => window.removeEventListener('cart_updated', handleCartUpdated);
+  }, []);
+
+  const handleIncrement = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isAdding) return;
+    if (isUpdating) return;
 
-    setIsAdding(true);
+    const newQty = quantity + 1;
+    setQuantity(newQty);
+    setIsUpdating(true);
+
     try {
-      const res = await addFoodToCart(food.id, 1);
-      if (res.success) {
-        setIsAdded(true);
-        if (onAddedToCart) onAddedToCart(food);
-        setTimeout(() => setIsAdded(false), 2200);
+      await updateFoodCartQuantity(food.id, newQty);
+      if (quantity === 0 && onAddedToCart) {
+        onAddedToCart(food);
       }
+      onQuantityChange?.(food, newQty);
     } catch {
-      // ignore
+      setQuantity(quantity);
     } finally {
-      setIsAdding(false);
+      setIsUpdating(false);
+    }
+  };
+
+  const handleDecrement = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isUpdating) return;
+
+    const newQty = Math.max(0, quantity - 1);
+    setQuantity(newQty);
+    setIsUpdating(true);
+
+    try {
+      await updateFoodCartQuantity(food.id, newQty);
+      onQuantityChange?.(food, newQty);
+    } catch {
+      setQuantity(quantity);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -116,35 +162,51 @@ export default function FoodCard({ food, onAddedToCart, priority }: FoodCardProp
             </span>
           </div>
 
-          {/* Add to Cart Button */}
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            disabled={isAdding}
-            className={`h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center gap-1.5 shadow-xs active:scale-95 ${
-              isAdded
-                ? 'bg-emerald-600 text-white border border-emerald-600'
-                : 'bg-amber-500 hover:bg-amber-600 text-white border border-amber-500'
-            }`}
-          >
-            {isAdding ? (
-              <span className="inline-block animate-spin">⏳</span>
-            ) : isAdded ? (
-              <>
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Added</span>
-              </>
-            ) : (
-              <>
-                <span className="text-sm leading-none font-extrabold">+</span>
-                <span>ADD</span>
-              </>
-            )}
-          </button>
+          {/* Add to Cart Button / Quantity Stepper */}
+          {quantity === 0 ? (
+            <button
+              type="button"
+              onClick={handleIncrement}
+              disabled={isUpdating}
+              className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-amber-500 hover:bg-amber-600 text-white border border-amber-500 transition-all duration-200 cursor-pointer flex items-center gap-1.5 shadow-xs active:scale-95 disabled:opacity-60"
+            >
+              {isUpdating ? (
+                <span className="inline-block animate-spin text-xs">⏳</span>
+              ) : (
+                <>
+                  <span className="text-sm leading-none font-extrabold">+</span>
+                  <span>ADD</span>
+                </>
+              )}
+            </button>
+          ) : (
+            <div className="h-9 min-w-[96px] rounded-xl bg-amber-500 text-white font-black text-xs shadow-xs flex items-center justify-between px-1.5 transition-all">
+              <button
+                type="button"
+                onClick={handleDecrement}
+                disabled={isUpdating}
+                className="w-7 h-7 flex items-center justify-center hover:bg-amber-600 rounded-lg active:scale-90 text-sm font-black cursor-pointer transition-colors"
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+              <span className="text-xs font-black px-2 min-w-[20px] text-center">
+                {quantity}
+              </span>
+              <button
+                type="button"
+                onClick={handleIncrement}
+                disabled={isUpdating}
+                className="w-7 h-7 flex items-center justify-center hover:bg-amber-600 rounded-lg active:scale-90 text-sm font-black cursor-pointer transition-colors"
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </article>
   );
 }
+

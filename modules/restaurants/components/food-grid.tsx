@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import FoodCard from './food-card';
 import { FoodProductItem } from '../restaurants.types';
+import { getCart } from '@/modules/cart/cart.api';
 
 interface FoodGridProps {
   foods: FoodProductItem[];
@@ -19,6 +20,41 @@ export default function FoodGrid({
   selectedCategoryName,
   onAddedToCart,
 }: FoodGridProps) {
+  const [cartQuantities, setCartQuantities] = useState<Record<number, number>>({});
+
+  // Sync active cart quantities from backend
+  useEffect(() => {
+    let isMounted = true;
+    async function loadCart() {
+      try {
+        const cart = await getCart();
+        if (isMounted && cart && Array.isArray(cart.items)) {
+          const map: Record<number, number> = {};
+          for (const item of cart.items) {
+            map[item.product_id] = item.quantity;
+          }
+          setCartQuantities(map);
+        }
+      } catch {
+        // Continue
+      }
+    }
+    loadCart();
+
+    const handleCartUpdated = (e: Event) => {
+      const customEvent = e as CustomEvent<{ count: number }>;
+      if (customEvent.detail && customEvent.detail.count === 0) {
+        if (isMounted) setCartQuantities({});
+      }
+    };
+
+    window.addEventListener('cart_updated', handleCartUpdated);
+    return () => {
+      isMounted = false;
+      window.removeEventListener('cart_updated', handleCartUpdated);
+    };
+  }, []);
+
   if (isLoading) {
     return (
       <section
@@ -77,10 +113,15 @@ export default function FoodGrid({
         <FoodCard
           key={food.id}
           food={food}
+          initialQuantity={cartQuantities[food.id] || 0}
           onAddedToCart={onAddedToCart}
+          onQuantityChange={(f, newQty) => {
+            setCartQuantities((prev) => ({ ...prev, [f.id]: newQty }));
+          }}
           priority={index < 2}
         />
       ))}
     </section>
   );
 }
+
