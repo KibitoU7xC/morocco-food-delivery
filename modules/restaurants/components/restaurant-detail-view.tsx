@@ -4,7 +4,8 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RestaurantItem, FoodProductItem, RestaurantPromoCode } from '../restaurants.types';
-import { addFoodToCart, getLiveCartCount } from '../restaurants.api';
+import { updateFoodCartQuantity, syncCartState } from '../restaurants.api';
+import FloatingCartBar from './floating-cart-bar';
 
 interface RestaurantDetailViewProps {
   restaurant: RestaurantItem;
@@ -116,25 +117,48 @@ export default function RestaurantDetailView({
   const [expandedDescriptions, setExpandedDescriptions] = useState<Record<number, boolean>>({});
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
   const [cartQuantities, setCartQuantities] = useState<Record<number, number>>({});
-  const [cartToast, setCartToast] = useState<string | null>(null);
+  const [cartCount, setCartCount] = useState(0);
   const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
-  const [, setLiveCartCount] = useState(0);
 
   const dealsScrollRef = useRef<HTMLDivElement | null>(null);
 
-  // Sync initial cart count
+  // Sync initial cart directly with backend
   useEffect(() => {
-    getLiveCartCount().then((cnt) => setLiveCartCount(cnt));
+    let isMounted = true;
+    syncCartState().then((res) => {
+      if (isMounted && res && Array.isArray(res.items)) {
+        const map: Record<number, number> = {};
+        for (const it of res.items) {
+          map[it.product_id] = it.quantity;
+        }
+        setCartQuantities(map);
+        setCartCount(res.count);
+      }
+    });
 
     const handleCartUpdated = (e: Event) => {
-      const customEvent = e as CustomEvent<{ count: number }>;
-      if (customEvent.detail && typeof customEvent.detail.count === 'number') {
-        setLiveCartCount(customEvent.detail.count);
+      const customEvent = e as CustomEvent<{ count: number; total?: number; items?: any[] }>;
+      if (customEvent.detail) {
+        if (customEvent.detail.count === 0) {
+          if (isMounted) setCartQuantities({});
+        } else if (Array.isArray(customEvent.detail.items)) {
+          const map: Record<number, number> = {};
+          for (const it of customEvent.detail.items) {
+            map[it.product_id] = it.quantity;
+          }
+          if (isMounted) setCartQuantities(map);
+        }
+        if (isMounted && typeof customEvent.detail.count === 'number') {
+          setCartCount(customEvent.detail.count);
+        }
       }
     };
 
     window.addEventListener('cart_updated', handleCartUpdated);
-    return () => window.removeEventListener('cart_updated', handleCartUpdated);
+    return () => {
+      isMounted = false;
+      window.removeEventListener('cart_updated', handleCartUpdated);
+    };
   }, []);
 
   const handleDealsScroll = (dir: 'left' | 'right') => {
@@ -159,16 +183,10 @@ export default function RestaurantDetailView({
 
     setCartQuantities((prev) => ({ ...prev, [dish.id]: newQty }));
 
-    if (delta > 0) {
-      setCartToast(`${dish.name} added to cart!`);
-      setTimeout(() => setCartToast(null), 3000);
-    }
-
     try {
-      const res = await addFoodToCart(dish.id, delta > 0 ? delta : 1);
-      setLiveCartCount(res.cartCount);
+      await updateFoodCartQuantity(dish.id, newQty);
     } catch {
-      // Local state is preserved
+      setCartQuantities((prev) => ({ ...prev, [dish.id]: currentQty }));
     }
   };
 
@@ -209,35 +227,10 @@ export default function RestaurantDetailView({
     }
   };
 
-  // Cart summary for floating bottom pill
-  const cartSummary = useMemo(() => {
-    let count = 0;
-    let total = 0;
-    for (const [idStr, qty] of Object.entries(cartQuantities)) {
-      if (qty > 0) {
-        count += qty;
-        const found = initialMenu.find((m) => m.id === Number(idStr));
-        if (found) {
-          total += found.price * qty;
-        }
-      }
-    }
-    return { count, total };
-  }, [cartQuantities, initialMenu]);
-
   const activePromoCodes: RestaurantPromoCode[] = restaurant.promoCodes || [];
 
   return (
     <div className="min-h-screen bg-[#fcfcfc] text-[#282c3f] font-sans pb-28 antialiased">
-      {/* Toast Alert */}
-      {cartToast && (
-        <div className="fixed bottom-20 sm:bottom-8 right-4 sm:right-8 z-50 bg-[#1c1c24] text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4">
-          <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold shrink-0">
-            ✓
-          </div>
-          <span className="text-sm font-semibold">{cartToast}</span>
-        </div>
-      )}
 
       {/* Main Container */}
       <div className="max-w-[860px] w-full mx-auto px-4 sm:px-6 pt-6">
@@ -636,12 +629,13 @@ export default function RestaurantDetailView({
                                   <button
                                     type="button"
                                     onClick={() => handleAddToCart(dish, 1)}
-                                    className="w-24 sm:w-28 h-9 rounded-xl bg-white border border-gray-200 hover:border-emerald-500 text-emerald-700 font-black text-xs sm:text-[13px] uppercase tracking-wider shadow-md hover:bg-emerald-50/50 flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95"
+                                    className="w-24 sm:w-28 h-9 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs sm:text-[13px] uppercase tracking-wider shadow-xs flex items-center justify-center gap-1 transition-all duration-200 cursor-pointer active:scale-95"
                                   >
-                                    ADD <span className="ml-1 text-sm font-black">+</span>
+                                    <span>ADD</span>
+                                    <span className="text-sm font-black leading-none">+</span>
                                   </button>
                                 ) : (
-                                  <div className="w-24 sm:w-28 h-9 rounded-xl bg-emerald-600 text-white font-black text-xs sm:text-[13px] shadow-md flex items-center justify-between px-2.5 transition-all">
+                                  <div className="w-24 sm:w-28 h-9 rounded-xl bg-amber-500 text-white font-black text-xs sm:text-[13px] shadow-xs flex items-center justify-between px-2.5 transition-all">
                                     <button
                                       type="button"
                                       onClick={() => handleAddToCart(dish, -1)}
@@ -679,9 +673,9 @@ export default function RestaurantDetailView({
         )}
       </div>
 
-      {/* 8. Floating "MENU" Quick-Jump Button (Matching Screenshots bottom right) */}
+      {/* 8. Floating "MENU" Quick-Jump Button */}
       {filteredMenu.length > 0 && (
-        <div className="fixed bottom-6 right-6 z-40">
+        <div className={`fixed right-6 z-40 transition-all duration-300 ${cartCount > 0 ? 'bottom-20' : 'bottom-6'}`}>
           <button
             type="button"
             onClick={() => setIsMenuDrawerOpen((prev) => !prev)}
@@ -728,28 +722,8 @@ export default function RestaurantDetailView({
         </div>
       )}
 
-      {/* 9. Floating Cart Bar (When dishes added to cart) */}
-      {cartSummary.count > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-gray-200 px-4 py-3 shadow-2xl">
-          <div className="max-w-[860px] mx-auto flex items-center justify-between">
-            <div>
-              <div className="text-xs font-bold text-gray-500 uppercase tracking-wide">
-                {cartSummary.count} {cartSummary.count === 1 ? 'item' : 'items'} in cart
-              </div>
-              <div className="text-base font-black text-[#1c1c24]">
-                {cartSummary.total.toFixed(0)} MAD
-              </div>
-            </div>
-            <Link
-              href="/checkout"
-              className="flex items-center gap-2 bg-[#F5B301] hover:bg-[#e0a300] text-gray-900 font-extrabold px-6 py-2.5 rounded-2xl shadow-md text-sm transition-all duration-200 hover:scale-102 active:scale-98"
-            >
-              <span>View Cart</span>
-              <span>→</span>
-            </Link>
-          </div>
-        </div>
-      )}
+      {/* 9. Synchronized Floating Cart Bar (Matches design reference) */}
+      <FloatingCartBar />
     </div>
   );
 }

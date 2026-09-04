@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import LoginForm from '@/modules/auth/components/login-form';
 import { useLanguage } from '@/lib/context/language-context';
+import { getLiveCartCount } from '@/modules/restaurants/restaurants.api';
 
 export default function HomeNavbar() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function HomeNavbar() {
   const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [customerName, setCustomerName] = useState<string | null>(null);
+  const [cartCount, setCartCount] = useState(0);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
@@ -42,8 +44,27 @@ export default function HomeNavbar() {
 
     updateAuthState();
 
+    // Initial cart load from storage and backend
+    const local = typeof window !== 'undefined' ? Number(localStorage.getItem('cart_count')) || 0 : 0;
+    setCartCount(local);
+    getLiveCartCount().then((count) => {
+      setCartCount(count);
+    }).catch(() => {});
+
+    // Listen to real-time cart updates
+    const handleCartUpdated = (e: Event) => {
+      const customEvt = e as CustomEvent<{ count?: number }>;
+      if (typeof customEvt.detail?.count === 'number') {
+        setCartCount(customEvt.detail.count);
+      } else {
+        const cnt = Number(localStorage.getItem('cart_count')) || 0;
+        setCartCount(cnt);
+      }
+    };
+
     window.addEventListener('storage', updateAuthState);
     window.addEventListener('auth_updated', updateAuthState);
+    window.addEventListener('cart_updated', handleCartUpdated);
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsAuthModalOpen(false);
     };
@@ -51,6 +72,7 @@ export default function HomeNavbar() {
     return () => {
       window.removeEventListener('storage', updateAuthState);
       window.removeEventListener('auth_updated', updateAuthState);
+      window.removeEventListener('cart_updated', handleCartUpdated);
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
@@ -64,20 +86,6 @@ export default function HomeNavbar() {
     'Tangier, Malabata',
     'Agadir, Centre',
   ];
-
-  const handleLogout = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('customer_data');
-      localStorage.removeItem('cart_count');
-      setUserLoggedIn(false);
-      setCustomerName(null);
-      window.dispatchEvent(new Event('auth_updated'));
-      window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count: 0 } }));
-    }
-    router.push('/');
-    router.refresh();
-  };
 
   return (
     <>
@@ -158,23 +166,18 @@ export default function HomeNavbar() {
               )}
             </div>
 
-            {/* 2. Log In / Sign Up Button */}
+            {/* 2. User Profile or Log In Button */}
             {userLoggedIn ? (
-              <div className="flex items-center gap-1 sm:gap-2">
-                <Link
-                  href="/profile"
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-full bg-[#f5f2fb] hover:bg-[#eae7ef] text-[#5906e7] text-xs font-bold border border-[#e4e1ea] transition-colors"
-                >
-                  👋 {customerName}
-                </Link>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#1b1b21] hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer active:scale-95"
-                >
-                  Logout
-                </button>
-              </div>
+              <Link
+                href="/profile"
+                className="flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#f5f2fb] hover:bg-[#eae7ef] text-[#5906e7] text-xs sm:text-sm font-bold border border-[#e4e1ea] transition-colors"
+                title="My Profile"
+              >
+                <svg className="w-4 h-4 text-[#5906e7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span className="truncate max-w-[85px] xs:max-w-[110px] sm:max-w-none">👋 {customerName}</span>
+              </Link>
             ) : (
               <button
                 type="button"
@@ -198,6 +201,26 @@ export default function HomeNavbar() {
                 <span className="sm:hidden">Log In</span>
               </button>
             )}
+
+            {/* 3. Cart Icon with Live Count Badge (Always visible across all sections) */}
+            <Link
+              href="/checkout"
+              className="relative flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-xs transition-all cursor-pointer shrink-0 select-none"
+              title={cartCount > 0 ? `${cartCount} items in cart` : 'Cart is empty'}
+              id="home-navbar-cart-btn"
+            >
+              <div className="relative flex items-center justify-center">
+                <svg className="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 bg-[#1b1b21] text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-md animate-in zoom-in-75 duration-200">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+              <span className="hidden sm:inline font-bold">Cart</span>
+            </Link>
 
             {/* 3. EN / FR Language Switcher Pill */}
             <div className="flex items-center bg-[#f5f2fb] p-0.5 sm:p-1 rounded-full border border-[#eae7ef] shadow-2xs shrink-0">

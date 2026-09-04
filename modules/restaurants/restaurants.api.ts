@@ -482,7 +482,7 @@ export async function addFoodToCart(
   productId: number,
   quantity = 1,
   specialInstructions?: string
-): Promise<{ success: boolean; message: string; cartCount: number }> {
+): Promise<{ success: boolean; message: string; cartCount: number; cartTotal?: number }> {
   try {
     // 1. Ensure user has an active token so request reaches user's DB cart
     if (typeof window !== 'undefined') {
@@ -529,18 +529,14 @@ export async function addFoodToCart(
       }
     );
 
-    // 3. Fetch fresh count directly from DB
-    const freshCount = await getLiveCartCount();
-
-    // 4. Broadcast cart update event to header and UI
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count: freshCount } }));
-    }
+    // 3. Fetch fresh count and total directly from DB
+    const freshState = await syncCartState();
 
     return {
       success: res?.success ?? true,
       message: res?.message || 'Item added to cart successfully.',
-      cartCount: freshCount,
+      cartCount: freshState.count,
+      cartTotal: freshState.total,
     };
   } catch (err: unknown) {
     // Graceful offline count update
@@ -548,13 +544,69 @@ export async function addFoodToCart(
     if (typeof window !== 'undefined') {
       fallbackCount = (Number(localStorage.getItem('cart_count')) || 0) + quantity;
       localStorage.setItem('cart_count', String(fallbackCount));
-      window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count: fallbackCount } }));
+      window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count: fallbackCount, total: 0 } }));
     }
     return {
       success: true,
       message: 'Item added to cart.',
       cartCount: fallbackCount,
+      cartTotal: 0,
     };
+  }
+}
+
+/**
+ * Synchronize live cart state directly with backend:
+ * Calculates exact count of items and total price in MAD, updates localStorage,
+ * and broadcasts 'cart_updated' event with count, total, and items.
+ */
+export async function syncCartState(): Promise<{
+  count: number;
+  total: number;
+  items: Array<{
+    id: number;
+    product_id: number;
+    quantity: number;
+    product?: { price?: number | string; name?: string };
+    variant?: { price?: number | string };
+  }>;
+}> {
+  try {
+    const res = await apiClient<{
+      success?: boolean;
+      data?: {
+        items?: Array<{
+          id: number;
+          product_id: number;
+          quantity: number;
+          product?: { price?: number | string; name?: string };
+          variant?: { price?: number | string };
+        }>;
+      } | null;
+    }>(API_ENDPOINTS.CART.GET);
+
+    const items = res?.data?.items || [];
+    const count = items.reduce((sum, it) => sum + (Number(it.quantity) || 1), 0);
+    const total = items.reduce((sum, it) => {
+      const price = Number(it.variant?.price ?? it.product?.price ?? 0);
+      return sum + price * (Number(it.quantity) || 1);
+    }, 0);
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cart_count', String(count));
+      localStorage.setItem('cart_total', String(total));
+      window.dispatchEvent(
+        new CustomEvent('cart_updated', {
+          detail: { count, total, items },
+        })
+      );
+    }
+
+    return { count, total, items };
+  } catch {
+    const count = typeof window !== 'undefined' ? Number(localStorage.getItem('cart_count') || 0) : 0;
+    const total = typeof window !== 'undefined' ? Number(localStorage.getItem('cart_total') || 0) : 0;
+    return { count, total, items: [] };
   }
 }
 
@@ -566,7 +618,7 @@ export async function addFoodToCart(
 export async function updateFoodCartQuantity(
   productId: number,
   targetQuantity: number
-): Promise<{ success: boolean; cartCount: number }> {
+): Promise<{ success: boolean; cartCount: number; cartTotal: number }> {
   try {
     // 1. Auto-login or register guest token if needed
     if (typeof window !== 'undefined') {
@@ -629,23 +681,18 @@ export async function updateFoodCartQuantity(
       }
     }
 
-    // 3. Fetch fresh count directly from DB
-    const freshCount = await getLiveCartCount();
+    // 3. Fetch fresh count and total directly from DB
+    const freshState = await syncCartState();
 
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('cart_count', String(freshCount));
-      window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count: freshCount } }));
-    }
-
-    return { success: true, cartCount: freshCount };
+    return { success: true, cartCount: freshState.count, cartTotal: freshState.total };
   } catch {
     let fallbackCount = 0;
     if (typeof window !== 'undefined') {
       fallbackCount = Math.max(0, targetQuantity);
       localStorage.setItem('cart_count', String(fallbackCount));
-      window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count: fallbackCount } }));
+      window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count: fallbackCount, total: 0 } }));
     }
-    return { success: true, cartCount: fallbackCount };
+    return { success: true, cartCount: fallbackCount, cartTotal: 0 };
   }
 }
 

@@ -8,6 +8,7 @@ import CuisineCarousel from '@/modules/restaurants/components/cuisine-carousel';
 import RestaurantFilters from '@/modules/restaurants/components/restaurant-filters';
 import RestaurantGrid from '@/modules/restaurants/components/restaurant-grid';
 import FoodGrid from '@/modules/restaurants/components/food-grid';
+import FloatingCartBar from '@/modules/restaurants/components/floating-cart-bar';
 import RestaurantFooter from '@/modules/restaurants/components/restaurant-footer';
 import {
   getRestaurants,
@@ -38,7 +39,6 @@ export default function RestaurantsPage() {
   const [foodItems, setFoodItems] = useState<FoodProductItem[]>([]);
   const [categories, setCategories] = useState<CuisineCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [cartToast, setCartToast] = useState<string | null>(null);
 
   // Active filters count
   const activeFilterCount = useMemo(() => {
@@ -149,23 +149,8 @@ export default function RestaurantsPage() {
     setUnder50MAD(false);
   };
 
-  const handleAddedToCart = (item: FoodProductItem) => {
-    setCartToast(`${item.name} added to cart!`);
-    setTimeout(() => setCartToast(null), 3000);
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans text-[#282c3f] antialiased">
-      {/* Toast Notification */}
-      {cartToast && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#1c1c24] text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4">
-          <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold shrink-0">
-            ✓
-          </div>
-          <span className="text-sm font-semibold">{cartToast}</span>
-        </div>
-      )}
-
       {/* 1. Main Header with user linking and location selector */}
       <RestaurantHeader
         selectedDistrict={selectedDistrict}
@@ -183,7 +168,7 @@ export default function RestaurantsPage() {
       />
 
       {/* 4. Main Content */}
-      <main className="flex-grow max-w-[1240px] w-full mx-auto px-4 pt-8 pb-16">
+      <main className="flex-grow max-w-[1240px] w-full mx-auto px-4 pt-8 pb-28">
         {/* "What's on your mind?" Category Carousel */}
         <CuisineCarousel
           categories={categories}
@@ -241,7 +226,6 @@ export default function RestaurantsPage() {
               isLoading={isLoading}
               onResetFilters={handleResetFilters}
               selectedCategoryName={selectedCategory?.name || null}
-              onAddedToCart={handleAddedToCart}
             />
           </section>
         )}
@@ -273,6 +257,9 @@ export default function RestaurantsPage() {
           </section>
         )}
       </main>
+
+      {/* Synchronized Floating Cart Bar (Matches design reference) */}
+      <FloatingCartBar />
 
       {/* 5. Stitch Footer */}
       <RestaurantFooter />

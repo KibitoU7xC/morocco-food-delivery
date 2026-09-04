@@ -117,21 +117,6 @@ export default function RestaurantHeader({
     'Marrakech, Guéliz',
   ];
 
-  const handleLogout = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('customer_data');
-      localStorage.removeItem('cart_count');
-      setUserLoggedIn(false);
-      setCustomerName(null);
-      setUserDropdownOpen(false);
-      window.dispatchEvent(new Event('auth_updated'));
-      window.dispatchEvent(new CustomEvent('cart_updated', { detail: { count: 0 } }));
-    }
-    router.push('/');
-    router.refresh();
-  };
-
   return (
     <>
       <header className="sticky top-0 z-50 w-full bg-[#fbf8ff]/90 backdrop-blur-xl py-2.5 sm:py-4 px-3 sm:px-8 transition-colors duration-300 border-b border-[#e4e1ea]/40" data-purpose="site-header">
@@ -251,18 +236,11 @@ export default function RestaurantHeader({
                     </Link>
                     <Link
                       href="/orders"
-                      className="block px-4 py-2 text-xs text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      className="block px-4 py-2.5 text-xs font-semibold text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-b-xl"
                       onClick={() => setUserDropdownOpen(false)}
                     >
                       My Orders
                     </Link>
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 font-semibold cursor-pointer border-t border-gray-100 mt-1"
-                    >
-                      Logout
-                    </button>
                   </div>
                 )}
               </div>
@@ -289,7 +267,7 @@ export default function RestaurantHeader({
 
             {/* Cart Icon with Live Count Badge */}
             <Link
-              href="/cart"
+              href="/checkout"
               className="relative flex items-center gap-2 py-2 text-gray-700 cursor-pointer group select-none hover:text-[#ea580c] transition-colors"
               title={cartCount > 0 ? `${cartCount} items in cart` : 'Cart is empty'}
             >
